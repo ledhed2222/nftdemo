@@ -30,7 +30,7 @@ export interface Token {
   decoded_uri: string
 }
 
-const override = css`
+const loaderCss = css`
   margin: 0 auto;
 `
 
@@ -53,7 +53,7 @@ const TokenList = () => {
 
   return (
     <div className="TokenList">
-      <GridLoader color="white" loading={loading} css={override} />
+      <GridLoader color="white" loading={loading} css={loaderCss} />
       <ul>
         {tokens.map((token) => (
           <li key={token.id} className="Token">
