@@ -1,6 +1,7 @@
 import { RippleAPI, NFTokenStorageOption } from '@ledhed2222/ripple-lib'
 import axios from 'axios'
 import React, { useState } from 'react'
+import { PulseLoader } from 'react-spinners'
 
 import './CreateForm.css'
 
@@ -17,6 +18,7 @@ const ISSUER_ADDRESS = 'rnvkNkdTzUmgkGcEUTXHChbC3YxhEonTsF'
 const CreateForm = ({ client, isConnected }: Props) => {
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
 
   const onTitleChange = (evn: React.ChangeEvent<HTMLInputElement>) => {
     evn.preventDefault()
@@ -32,7 +34,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
     evn.preventDefault()
 
     // validations
-    if (!isConnected) {
+    if (!client.isConnected()) {
       return
     }
     if (title.length === 0) {
@@ -41,6 +43,9 @@ const CreateForm = ({ client, isConnected }: Props) => {
     if (content.length === 0) {
       return
     }
+
+    setLoading(true)
+
     // post data onto backend
     const contentId = (
       await axios({
@@ -69,6 +74,8 @@ const CreateForm = ({ client, isConnected }: Props) => {
         content_id: contentId,
       },
     })
+
+    setLoading(false)
   }
 
   return (
@@ -80,6 +87,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
           type="text"
           placeholder="NFT Title"
           onChange={onTitleChange}
+          disabled={loading}
         />
         <textarea
           className="Content"
@@ -87,14 +95,21 @@ const CreateForm = ({ client, isConnected }: Props) => {
           placeholder="NFT content"
           value={content}
           onChange={onContentChange}
+          disabled={loading}
         />
         <input
           className="Submit"
           type="submit"
           value="Mint"
-          disabled={false && !isConnected}
+          disabled={loading}
         />
       </form>
+      <PulseLoader
+        color="white"
+        loading={loading}
+        size={20}
+        speedMultiplier={0.75}
+      />
     </div>
   )
 }
