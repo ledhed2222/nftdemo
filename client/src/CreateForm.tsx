@@ -72,7 +72,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
   }
 
   const isMintButtonDisabled = () => {
-    return title.length === 0 || content.length === 0
+    return title.length === 0 || content.length === 0 || !client.isConnected()
   }
 
   return (
