@@ -1,0 +1,20 @@
+.CreateForm form {
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: auto;
+}
+
+.CreateForm form > * {
+  margin: 0 auto 10px auto;
+}
+
+.CreateForm .Title {
+  width: 300px;
+}
+
+.CreateForm .Content {
+  width: 500px;
+  height: 100px;
+}

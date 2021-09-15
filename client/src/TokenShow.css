@@ -1,0 +1,8 @@
+.TokenShow {
+  text-align: start;
+}
+
+.TokenShow .TokenContent {
+  margin: 20px 0 40px 20px;
+  font-style: italic;
+}

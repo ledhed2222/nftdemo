@@ -1,0 +1,2 @@
+web: cd client && npm run start-https
+api: bundle exec rails s -b 'ssl://localhost:3000?key=localhost-key.pem&cert=localhost-crt.pem'

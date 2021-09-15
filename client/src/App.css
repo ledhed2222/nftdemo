@@ -1,0 +1,66 @@
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.App a {
+  color: white;
+  text-decoration: none;
+}
+
+.App a:hover {
+  color: pink;
+}
+
+.App .ContentPortal {
+  width: 95%;
+  max-width: 1100px;
+  padding: 20px 0 0 0;
+}
+
+.App .ContentPortal .Content.fade-enter {
+  opacity: 0;
+}
+
+.App .ContentPortal .Content.fade-enter-active {
+  opacity: 1;
+  transition: opacity 250ms ease-in;
+}
+
+.App .ContentPortal .Content.fade-exit {
+  display: none;
+}
+
+.App .ContentPortal .Content > * {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.App .NavBar {
+  width: 100%;
+  border-bottom: 1px solid white;
+}
+
+.App .NavBar ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  list-style: none;
+}
+
+.App .NavBar ul > li {
+  margin: 0 40px 0 0;
+}
+
+.App .NavBar ul > li .currentPage {
+  color: pink;
+}
+
+.App .Disclaimer {
+  padding: 20px 0 50px 0;
+}

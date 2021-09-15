@@ -1,0 +1,38 @@
+.TokenList ul {
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: auto;
+}
+
+.TokenList li {
+  list-style: none;
+}
+
+.TokenList .Token {
+  padding: 10px;
+  background-color: inherit;
+}
+
+.TokenList .Token:nth-child(even) {
+  background-color: #5d5b5b;
+}
+
+.TokenList .Token .TokenField {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  margin: 0 auto 10px auto;
+}
+
+.TokenList .Token .TokenField .FieldName {
+  font-weight: bold;
+  margin: auto 0 auto 0;
+  width: 100px;
+  text-align: start;
+}
+
+.TokenList .Token .TokenField .FieldValue {
+  margin: auto 0 auto 0;
+}
