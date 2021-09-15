@@ -1,2 +1,2 @@
-release: rake db:migrate && cd client && npm i && npm run build
+release: rake db:migrate
 web: bundle exec rails s
