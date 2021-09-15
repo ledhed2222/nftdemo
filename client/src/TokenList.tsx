@@ -1,6 +1,8 @@
+import { css } from '@emotion/react'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { GridLoader } from 'react-spinners'
 
 import './TokenList.css'
 
@@ -28,8 +30,13 @@ export interface Token {
   decoded_uri: string
 }
 
+const override = css`
+  margin: 0 auto;
+`
+
 const TokenList = () => {
   const [tokens, setTokens] = useState<Token[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const loadTokens = async () => {
@@ -39,12 +46,14 @@ const TokenList = () => {
       })
       const newTokens = response.data as Token[]
       setTokens(newTokens)
+      setLoading(false)
     }
     loadTokens()
   }, [])
 
   return (
     <div className="TokenList">
+      <GridLoader color="white" loading={loading} css={override} />
       <ul>
         {tokens.map((token) => (
           <li key={token.id} className="Token">
