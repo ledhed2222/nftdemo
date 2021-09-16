@@ -78,6 +78,15 @@ const CreateForm = ({ client, isConnected }: Props) => {
     setLoading(false)
   }
 
+  const isMintButtonDisabled = () => {
+    return (
+      loading ||
+      title.length === 0 ||
+      content.length === 0 ||
+      !client.isConnected()
+    )
+  }
+
   return (
     <div className="CreateForm">
       <form onSubmit={onSubmit}>
@@ -101,7 +110,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
           className="Submit"
           type="submit"
           value="Mint"
-          disabled={loading}
+          disabled={isMintButtonDisabled()}
         />
       </form>
       <PulseLoader
