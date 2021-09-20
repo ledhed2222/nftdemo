@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
+import Identicon from './Identicon'
 import { Token } from './TokenList'
 
 import './TokenShow.css'
@@ -38,6 +39,8 @@ const TokenShow = () => {
 
   return (
     <div className="TokenShow">
+      {/* TODO use TokenID as value when it's available to use */}
+      <Identicon value={tokenContent?.token.payload.hash || id} />
       Content:
       <div className="TokenContent">{tokenContent?.content?.payload}</div>
       Raw:
