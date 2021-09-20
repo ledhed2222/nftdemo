@@ -9,10 +9,8 @@ interface Props {
 const Identicon = ({ value, size }: Props) => {
   const icon = useRef(null)
   useEffect(() => {
-    if (icon) {
-      // TODO replace this tslint hack
-      update(icon.current as unknown as string, value)
-    }
+    // TODO replace this tslint hack
+    update(icon.current as unknown as string, value)
   }, [value])
 
   return (
