@@ -30,9 +30,10 @@ export interface Token {
   decoded_uri: string
 }
 
-const loaderCss = css`
-  margin: 0 auto;
-`
+const loaderStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+}
 
 const TokenList = () => {
   const [tokens, setTokens] = useState<Token[]>([])
@@ -53,7 +54,9 @@ const TokenList = () => {
 
   return (
     <div className="TokenList">
-      <GridLoader color="white" loading={loading} css={loaderCss} />
+      <div style={loaderStyle}>
+        <GridLoader color="white" loading={loading} />
+      </div>
       <ul>
         {tokens.map((token) => (
           <li key={token.id} className="Token">
