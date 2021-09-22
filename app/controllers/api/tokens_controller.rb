@@ -13,6 +13,7 @@ module Api
       Token.create(
         payload: params[:payload],
         content_id: params[:content_id],
+        token_id: params[:token_id],
       )
       head :ok
     end
