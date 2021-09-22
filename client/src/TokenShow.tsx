@@ -62,9 +62,8 @@ const TokenShow = ({ client }: Props) => {
   }, [id])
 
   const signAndSend = async (transaction: TransactionJSON) => {
-    const secret = ISSUER_SEED
     const preparedTransaction = await client.prepareTransaction(transaction)
-    const signedTransaction = client.sign(preparedTransaction.txJSON, secret)
+    const signedTransaction = client.sign(preparedTransaction.txJSON, ISSUER_SEED)
     const transactionResponse = await client.request('submit', {
       tx_blob: signedTransaction.signedTransaction,
     })
