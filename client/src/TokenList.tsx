@@ -26,6 +26,7 @@ export interface Token {
   updated_at: string
   title: string
   decoded_uri: string
+  token_id: string
 }
 
 const TokenList = () => {
@@ -53,8 +54,8 @@ const TokenList = () => {
               <span className="FieldValue">&nbsp;{token.title}</span>
             </div>
             <div className="TokenField">
-              <span className="FieldName">Hash</span>
-              <span className="FieldValue">&nbsp;{token.payload.hash}</span>
+              <span className="FieldName">Token ID</span>
+              <span className="FieldValue">&nbsp;{token.token_id}</span>
             </div>
             <div className="TokenField">
               <span className="FieldName">URI</span>

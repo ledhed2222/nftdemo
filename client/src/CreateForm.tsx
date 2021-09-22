@@ -53,7 +53,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
       })
     ).data as number
     // mint
-    const mintResponse = await client.createNFToken(ISSUER_SEED, {
+    const [tokenID, mintResponse] = await client.createNFToken(ISSUER_SEED, {
       issuingAccount: ISSUER_ADDRESS,
       storageOption: NFTokenStorageOption.CentralizedOffLedger,
       uri: `${window.location.origin}/tokens/${contentId}`,
@@ -65,6 +65,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
       method: 'post',
       url: '/api/tokens',
       data: {
+        token_id: tokenID,
         payload: mintResponse,
         content_id: contentId,
       },
