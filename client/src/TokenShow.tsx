@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { ISSUER_SEED } from './CreateForm'
+import Identicon from './Identicon'
 import { Token } from './TokenList'
 
 import './TokenShow.css'
@@ -81,6 +82,7 @@ const TokenShow = ({ client }: Props) => {
 
   return (
     <div className="TokenShow">
+      {tokenContent && <Identicon value={tokenContent.token.token_id} />}
       <button type="button" onClick={burnToken}>
         Burn Token
       </button>

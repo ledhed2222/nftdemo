@@ -38,5 +38,6 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'off',
     '@typescript-eslint/no-unnecessary-type-assertion': 'off',
     'no-debugger': 'off',
+    'react/require-default-props': 'off',
   },
 }
