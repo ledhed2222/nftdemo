@@ -82,8 +82,7 @@ const TokenShow = ({ client }: Props) => {
 
   return (
     <div className="TokenShow">
-      {/* TODO use TokenID as value when it's available to use */}
-      <Identicon value={tokenContent?.token.payload.hash || id} />
+      {tokenContent && <Identicon value={tokenContent.token.token_id} />}
       <button type="button" onClick={burnToken}>
         Burn Token
       </button>
