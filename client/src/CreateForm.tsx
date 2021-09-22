@@ -66,7 +66,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
       skipValidation: false,
     })
     // store this
-    axios({
+    await axios({
       method: 'post',
       url: '/api/tokens',
       data: {
