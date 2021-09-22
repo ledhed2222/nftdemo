@@ -16,5 +16,10 @@ module Api
       )
       head :ok
     end
+
+    def destroy
+      Token.find(params[:id]).destroy!
+      head :ok
+    end
   end
 end
