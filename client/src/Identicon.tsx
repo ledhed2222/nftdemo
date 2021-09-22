@@ -6,7 +6,7 @@ interface Props {
   size?: string
 }
 
-const Identicon = ({ value, size }: Props) => {
+const Identicon = ({ value, size = '100' }: Props) => {
   const icon = useRef(null)
   useEffect(() => {
     // TODO replace this tslint hack
@@ -18,10 +18,6 @@ const Identicon = ({ value, size }: Props) => {
       <svg data-jdenticon-value={value} height={size} ref={icon} width={size} />
     </div>
   )
-}
-
-Identicon.defaultProps = {
-  size: '100',
 }
 
 export default Identicon
