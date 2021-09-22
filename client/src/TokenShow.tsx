@@ -108,11 +108,10 @@ const TokenShow = ({ client }: Props) => {
 
     await signAndSend(burnTx)
 
-    // TODO uncomment when burning route is available
-    // const response = await axios({
-    //   method: 'delete',
-    //   url: `/api/contents/${id}`,
-    // })
+    await axios({
+      method: 'delete',
+      url: `/api/tokens/${id}`,
+    })
 
     historyRouter.push('/tokens')
   }
