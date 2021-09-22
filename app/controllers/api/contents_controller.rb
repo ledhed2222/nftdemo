@@ -1,9 +1,5 @@
 module Api
   class ContentsController < ApplicationController
-    def index
-      render json: Content.all
-    end
-
     def show
       content = Content.find(params[:id])
       render json: {
