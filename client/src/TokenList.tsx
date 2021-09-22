@@ -5,17 +5,19 @@ import { Link } from 'react-router-dom'
 import './TokenList.css'
 
 interface TokenPayload {
-  Fee: string
-  URI: string
-  hash: string
-  Flags: number
-  Account: string
-  Sequence: number
-  TokenTaxon: number
-  TxnSignature: string
-  SigningPubKey: string
-  TransactionType: 'NFTokenMint'
-  LastLedgerSequence: number
+  tx_json: {
+    Fee: string
+    URI: string
+    hash: string
+    Flags: number
+    Account: string
+    Sequence: number
+    TokenTaxon: number
+    TxnSignature: string
+    SigningPubKey: string
+    TransactionType: 'NFTokenMint'
+    LastLedgerSequence: number
+  }
 }
 
 export interface Token {
