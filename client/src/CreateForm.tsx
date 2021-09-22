@@ -1,6 +1,7 @@
 import { RippleAPI, NFTokenStorageOption } from '@ledhed2222/ripple-lib'
 import axios from 'axios'
 import React, { useState } from 'react'
+import { PulseLoader } from 'react-spinners'
 
 import './CreateForm.css'
 
@@ -17,6 +18,7 @@ const ISSUER_ADDRESS = 'rnvkNkdTzUmgkGcEUTXHChbC3YxhEonTsF'
 const CreateForm = ({ client, isConnected }: Props) => {
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const onTitleChange = (evn: React.ChangeEvent<HTMLInputElement>) => {
     evn.preventDefault()
@@ -32,7 +34,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
     evn.preventDefault()
 
     // validations
-    if (!isConnected) {
+    if (!client.isConnected()) {
       return
     }
     if (title.length === 0) {
@@ -41,6 +43,9 @@ const CreateForm = ({ client, isConnected }: Props) => {
     if (content.length === 0) {
       return
     }
+
+    setIsLoading(true)
+
     // post data onto backend
     const contentId = (
       await axios({
@@ -53,26 +58,35 @@ const CreateForm = ({ client, isConnected }: Props) => {
       })
     ).data as number
     // mint
-    const mintResponse = await client.createNFToken(ISSUER_SEED, {
+    const [tokenID, mintResponse] = (await client.createNFToken(ISSUER_SEED, {
       issuingAccount: ISSUER_ADDRESS,
       storageOption: NFTokenStorageOption.CentralizedOffLedger,
       uri: `${window.location.origin}/tokens/${contentId}`,
       // TODO switch on environment
       skipValidation: false,
-    })
+    })) as [string, string]
+
     // store this
-    axios({
+    await axios({
       method: 'post',
       url: '/api/tokens',
       data: {
+        token_id: tokenID,
         payload: mintResponse,
         content_id: contentId,
       },
     })
+
+    setIsLoading(false)
   }
 
   const isMintButtonDisabled = () => {
-    return title.length === 0 || content.length === 0 || !client.isConnected()
+    return (
+      isLoading ||
+      title.length === 0 ||
+      content.length === 0 ||
+      !client.isConnected()
+    )
   }
 
   return (
@@ -84,6 +98,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
           type="text"
           placeholder="NFT Title"
           onChange={onTitleChange}
+          disabled={isLoading}
         />
         <textarea
           className="Content"
@@ -91,6 +106,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
           placeholder="NFT content"
           value={content}
           onChange={onContentChange}
+          disabled={isLoading}
         />
         <input
           className="Submit"
@@ -99,6 +115,12 @@ const CreateForm = ({ client, isConnected }: Props) => {
           disabled={isMintButtonDisabled()}
         />
       </form>
+      <PulseLoader
+        color="white"
+        loading={isLoading}
+        size={20}
+        speedMultiplier={0.75}
+      />
     </div>
   )
 }

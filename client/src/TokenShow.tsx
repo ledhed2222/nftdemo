@@ -27,25 +27,6 @@ interface TokenResponse {
   token: Token
 }
 
-interface TxResponse {
-  meta: {
-    AffectedNodes: [
-      {
-        ModifiedNode: {
-          FinalFields: {
-            NonFungibleTokens: Array<{
-              NonFungibleToken: {
-                TokenID: string
-                URI: string
-              }
-            }>
-          }
-        }
-      },
-    ]
-  }
-}
-
 const TokenShow = ({ client }: Props) => {
   const [tokenContent, setTokenContent] = useState<TokenResponse | null>(null)
   const { id } = useParams<Params>()
@@ -63,32 +44,14 @@ const TokenShow = ({ client }: Props) => {
   }, [id])
 
   const signAndSend = async (transaction: TransactionJSON) => {
-    const secret = ISSUER_SEED
     const preparedTransaction = await client.prepareTransaction(transaction)
-    const signedTransaction = client.sign(preparedTransaction.txJSON, secret)
+    const signedTransaction = client.sign(
+      preparedTransaction.txJSON,
+      ISSUER_SEED,
+    )
     const transactionResponse = await client.request('submit', {
       tx_blob: signedTransaction.signedTransaction,
     })
-  }
-
-  const getTokenID = async () => {
-    if (tokenContent == null) {
-      throw Error('tokenContent is null')
-    }
-
-    const txResponse: TxResponse = await client.request('tx', {
-      transaction: tokenContent.token.payload.hash,
-    })
-
-    const NonFungibleTokens =
-      txResponse.meta.AffectedNodes[0].ModifiedNode.FinalFields
-        .NonFungibleTokens
-
-    const TokenID = NonFungibleTokens.find(
-      (token) => token.NonFungibleToken.URI === tokenContent.token.payload.URI,
-    )?.NonFungibleToken.TokenID
-
-    return TokenID
   }
 
   const burnToken = async () => {
@@ -103,8 +66,8 @@ const TokenShow = ({ client }: Props) => {
 
     const burnTx = {
       TransactionType: 'NFTokenBurn',
-      Account: tokenContent.token.payload.Account,
-      TokenID: await getTokenID(),
+      Account: tokenContent.token.payload.tx_json.Account,
+      TokenID: tokenContent.token.token_id,
     }
 
     await signAndSend(burnTx)

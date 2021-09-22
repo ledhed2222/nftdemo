@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :api do
-    resources :tokens, :contents, only: [:index, :show, :create]
+    resources :contents, only: [:show, :create]
+    resources :tokens, only: [:index, :show, :create, :destroy]
   end
 
   match "/tokens/:id", to: "api/contents#exists?", via: [:head]
