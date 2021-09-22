@@ -11,7 +11,7 @@ interface Props {
 
 // TODO this is ridiculous yes, but these are values from a standalone node so
 // aren't sensitive
-const ISSUER_SEED = 'sEdV7xTKH4B2XFyW9h4F3VSBYradsnQ'
+export const ISSUER_SEED = 'sEdV7xTKH4B2XFyW9h4F3VSBYradsnQ'
 const ISSUER_ADDRESS = 'rnvkNkdTzUmgkGcEUTXHChbC3YxhEonTsF'
 
 const CreateForm = ({ client, isConnected }: Props) => {
