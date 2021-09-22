@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { GridLoader } from 'react-spinners'
 
 import './TokenList.css'
 
@@ -31,8 +32,14 @@ export interface Token {
   token_id: string
 }
 
+const loaderStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+}
+
 const TokenList = () => {
   const [tokens, setTokens] = useState<Token[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const loadTokens = async () => {
@@ -42,12 +49,16 @@ const TokenList = () => {
       })
       const newTokens = response.data as Token[]
       setTokens(newTokens)
+      setIsLoading(false)
     }
     loadTokens()
   }, [])
 
   return (
     <div className="TokenList">
+      <div style={loaderStyle}>
+        <GridLoader color="white" loading={isLoading} />
+      </div>
       <ul>
         {tokens.map((token) => (
           <li key={token.id} className="Token">
