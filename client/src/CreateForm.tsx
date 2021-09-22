@@ -53,13 +53,14 @@ const CreateForm = ({ client, isConnected }: Props) => {
       })
     ).data as number
     // mint
-    const [tokenID, mintResponse] = await client.createNFToken(ISSUER_SEED, {
+    const [tokenID, mintResponse] = (await client.createNFToken(ISSUER_SEED, {
       issuingAccount: ISSUER_ADDRESS,
       storageOption: NFTokenStorageOption.CentralizedOffLedger,
       uri: `${window.location.origin}/tokens/${contentId}`,
       // TODO switch on environment
       skipValidation: false,
-    })
+    })) as [string, string]
+
     // store this
     axios({
       method: 'post',
