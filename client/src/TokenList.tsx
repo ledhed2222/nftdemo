@@ -1,4 +1,3 @@
-import { css } from '@emotion/react'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
@@ -37,7 +36,7 @@ const loaderStyle = {
 
 const TokenList = () => {
   const [tokens, setTokens] = useState<Token[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const loadTokens = async () => {
@@ -47,7 +46,7 @@ const TokenList = () => {
       })
       const newTokens = response.data as Token[]
       setTokens(newTokens)
-      setLoading(false)
+      setIsLoading(false)
     }
     loadTokens()
   }, [])
@@ -55,7 +54,7 @@ const TokenList = () => {
   return (
     <div className="TokenList">
       <div style={loaderStyle}>
-        <GridLoader color="white" loading={loading} />
+        <GridLoader color="white" loading={isLoading} />
       </div>
       <ul>
         {tokens.map((token) => (

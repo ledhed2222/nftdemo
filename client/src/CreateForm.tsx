@@ -18,7 +18,7 @@ const ISSUER_ADDRESS = 'rnvkNkdTzUmgkGcEUTXHChbC3YxhEonTsF'
 const CreateForm = ({ client, isConnected }: Props) => {
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const onTitleChange = (evn: React.ChangeEvent<HTMLInputElement>) => {
     evn.preventDefault()
@@ -44,7 +44,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
       return
     }
 
-    setLoading(true)
+    setIsLoading(true)
 
     // post data onto backend
     const contentId = (
@@ -75,12 +75,12 @@ const CreateForm = ({ client, isConnected }: Props) => {
       },
     })
 
-    setLoading(false)
+    setIsLoading(false)
   }
 
   const isMintButtonDisabled = () => {
     return (
-      loading ||
+      isLoading ||
       title.length === 0 ||
       content.length === 0 ||
       !client.isConnected()
@@ -96,7 +96,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
           type="text"
           placeholder="NFT Title"
           onChange={onTitleChange}
-          disabled={loading}
+          disabled={isLoading}
         />
         <textarea
           className="Content"
@@ -104,7 +104,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
           placeholder="NFT content"
           value={content}
           onChange={onContentChange}
-          disabled={loading}
+          disabled={isLoading}
         />
         <input
           className="Submit"
@@ -115,7 +115,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
       </form>
       <PulseLoader
         color="white"
-        loading={loading}
+        loading={isLoading}
         size={20}
         speedMultiplier={0.75}
       />
