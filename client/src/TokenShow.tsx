@@ -74,7 +74,7 @@ const TokenShow = ({ client }: Props) => {
 
     await axios({
       method: 'delete',
-      url: `/api/tokens/${id}`,
+      url: `/api/tokens/${tokenContent.token.id}`,
     })
 
     historyRouter.push('/tokens')
@@ -82,7 +82,9 @@ const TokenShow = ({ client }: Props) => {
 
   return (
     <div className="TokenShow">
-      {tokenContent && <Identicon value={tokenContent.token.token_id} />}
+      {tokenContent && (
+        <Identicon value={`${tokenContent.token.payload.tx_json.hash}`} />
+      )}
       <button type="button" onClick={burnToken}>
         Burn Token
       </button>
