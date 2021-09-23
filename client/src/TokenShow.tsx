@@ -1,6 +1,7 @@
 import { RippleAPI, TransactionJSON } from '@ledhed2222/ripple-lib'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import ReactJson from 'react-json-view'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { ISSUER_SEED } from './CreateForm'
@@ -91,7 +92,11 @@ const TokenShow = ({ client }: Props) => {
       Content:
       <div className="TokenContent">{tokenContent?.content?.payload}</div>
       Raw:
-      <pre>{JSON.stringify(tokenContent, null, 2)}</pre>
+      <ReactJson
+        src={tokenContent ?? {}}
+        displayObjectSize={false}
+        displayDataTypes={false}
+      />
     </div>
   )
 }
