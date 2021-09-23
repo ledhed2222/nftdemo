@@ -123,7 +123,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
         </Button>
       </form>
       <PulseLoader
-        color="white"
+        color="black"
         loading={isLoading}
         size={20}
         speedMultiplier={0.75}

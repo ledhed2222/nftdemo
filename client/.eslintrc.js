@@ -40,5 +40,8 @@ module.exports = {
     'no-debugger': 'off',
     'react/require-default-props': 'off',
     'prettier/prettier': 'off',
+    'import/order': 'off',
+    '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-member-access': 'off',
   },
 }
