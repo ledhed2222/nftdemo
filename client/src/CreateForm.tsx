@@ -1,4 +1,6 @@
 import { RippleAPI, NFTokenStorageOption } from '@ledhed2222/ripple-lib'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { PulseLoader } from 'react-spinners'
@@ -92,28 +94,33 @@ const CreateForm = ({ client, isConnected }: Props) => {
   return (
     <div className="CreateForm">
       <form onSubmit={onSubmit}>
-        <input
-          className="Title"
+        <TextField
+          id="outlined-basic"
           required
-          type="text"
-          placeholder="NFT Title"
+          label="NFT Title"
+          variant="outlined"
           onChange={onTitleChange}
           disabled={isLoading}
         />
-        <textarea
-          className="Content"
+        <TextField
+          id="outlined-basic"
           required
-          placeholder="NFT content"
+          multiline
+          fullWidth
+          label="NFT Content"
+          variant="outlined"
+          minRows={4}
           value={content}
           onChange={onContentChange}
           disabled={isLoading}
         />
-        <input
-          className="Submit"
+        <Button
+          variant="contained"
           type="submit"
-          value="Mint"
           disabled={isMintButtonDisabled()}
-        />
+        >
+          Mint Token
+        </Button>
       </form>
       <PulseLoader
         color="white"

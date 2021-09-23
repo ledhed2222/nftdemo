@@ -39,5 +39,6 @@ module.exports = {
     '@typescript-eslint/no-unnecessary-type-assertion': 'off',
     'no-debugger': 'off',
     'react/require-default-props': 'off',
+    'prettier/prettier': 'off',
   },
 }

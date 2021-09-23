@@ -4,16 +4,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
+  /* color: white; */
 }
 
 .App a {
-  color: white;
+  /* color: white; */
   text-decoration: none;
 }
 
 .App a:hover {
-  color: pink;
+  /* color: pink; */
 }
 
 .App .ContentPortal {
@@ -43,7 +43,7 @@
 
 .App .NavBar {
   width: 100%;
-  border-bottom: 1px solid white;
+  /* border-bottom: 1px solid white; */
 }
 
 .App .NavBar ul {
@@ -58,7 +58,7 @@
 }
 
 .App .NavBar ul > li .currentPage {
-  color: pink;
+  /* color: pink; */
 }
 
 .App .Disclaimer {
