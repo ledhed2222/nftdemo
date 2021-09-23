@@ -1,5 +1,13 @@
 import { RippleAPI, TransactionJSON } from '@ledhed2222/ripple-lib'
 import axios from 'axios'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import React, { useState, useEffect } from 'react'
 import ReactJson from 'react-json-view'
 import { useHistory, useParams } from 'react-router-dom'
@@ -83,20 +91,45 @@ const TokenShow = ({ client }: Props) => {
 
   return (
     <div className="TokenShow">
-      {tokenContent && (
-        <Identicon value={`${tokenContent.token.payload.tx_json.hash}`} />
-      )}
-      <button type="button" onClick={burnToken}>
-        Burn Token
-      </button>
-      Content:
-      <div className="TokenContent">{tokenContent?.content?.payload}</div>
-      Raw:
-      <ReactJson
-        src={tokenContent ?? {}}
-        displayObjectSize={false}
-        displayDataTypes={false}
-      />
+      <Card sx={{ boxShadow: 2 }}>
+        <CardHeader
+          avatar={
+            tokenContent && <Identicon value={tokenContent.token.payload.tx_json.hash} />
+          }
+          action={
+            <IconButton aria-label="settings">
+              <Button variant="outlined" color="error" onClick={burnToken}>
+                Burn Token
+              </Button>
+            </IconButton>
+          }
+          title={tokenContent?.token.title}
+          subheader={tokenContent?.token.token_id}
+          sx={{ background: '#e6e6e6' }}
+        />
+        <Divider />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            Content
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <div className="TokenContent">{tokenContent?.content?.payload}</div>
+          </Typography>
+
+          <Typography gutterBottom variant="h5" component="div">
+            Raw
+          </Typography>
+          <Box sx={{ boxShadow: 3 }}>
+            <ReactJson
+              src={tokenContent ?? {}}
+              displayObjectSize={false}
+              displayDataTypes={false}
+              collapseStringsAfterLength={120}
+              theme="chalk"
+            />
+          </Box>
+        </CardContent>
+      </Card>
     </div>
   )
 }

@@ -67,8 +67,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const TokenList = () => {
   const [tokens, setTokens] = useState<Token[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  // DEBUG
-  // const [datTokenLife, setDatTokenLife] = useState<Token[]>([])
 
   useEffect(() => {
     const loadTokens = async () => {
@@ -78,8 +76,6 @@ const TokenList = () => {
       })
       const newTokens = response.data as Token[]
       setTokens(newTokens)
-      // DEBUG
-      // setDatTokenLife([...newTokens, ...newTokens, ...newTokens])
       setIsLoading(false)
     }
     loadTokens()
