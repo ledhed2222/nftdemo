@@ -1,4 +1,7 @@
 import { RippleAPI, NFTokenStorageOption } from '@ledhed2222/ripple-lib'
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { PulseLoader } from 'react-spinners'
@@ -19,6 +22,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isMintSuccess, setIsMintSuccess] = useState<boolean>(false)
 
   const onTitleChange = (evn: React.ChangeEvent<HTMLInputElement>) => {
     evn.preventDefault()
@@ -78,6 +82,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
     })
 
     setIsLoading(false)
+    setIsMintSuccess(true)
   }
 
   const isMintButtonDisabled = () => {
@@ -92,31 +97,44 @@ const CreateForm = ({ client, isConnected }: Props) => {
   return (
     <div className="CreateForm">
       <form onSubmit={onSubmit}>
-        <input
-          className="Title"
+        {
+          isMintSuccess &&
+          <Alert onClose={() => setIsMintSuccess(false)}>
+            Token Minted: {title}
+          </Alert>
+        }
+
+        <TextField
+          id="outlined-basic"
           required
-          type="text"
-          placeholder="NFT Title"
+          label="NFT Title"
+          variant="outlined"
+          value={title}
           onChange={onTitleChange}
           disabled={isLoading}
         />
-        <textarea
-          className="Content"
+        <TextField
+          id="outlined-basic"
           required
-          placeholder="NFT content"
+          multiline
+          fullWidth
+          label="NFT Content"
+          variant="outlined"
+          minRows={4}
           value={content}
           onChange={onContentChange}
           disabled={isLoading}
         />
-        <input
-          className="Submit"
+        <Button
+          variant="contained"
           type="submit"
-          value="Mint"
           disabled={isMintButtonDisabled()}
-        />
+        >
+          Mint Token
+        </Button>
       </form>
       <PulseLoader
-        color="white"
+        color="black"
         loading={isLoading}
         size={20}
         speedMultiplier={0.75}

@@ -39,5 +39,10 @@ module.exports = {
     '@typescript-eslint/no-unnecessary-type-assertion': 'off',
     'no-debugger': 'off',
     'react/require-default-props': 'off',
+    'prettier/prettier': 'off',
+    'import/order': 'off',
+    '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
   },
 }
