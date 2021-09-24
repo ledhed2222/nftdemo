@@ -1,4 +1,5 @@
 import { RippleAPI, NFTokenStorageOption } from '@ledhed2222/ripple-lib'
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import axios from 'axios'
@@ -21,6 +22,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isMintSuccess, setIsMintSuccess] = useState<boolean>(false)
 
   const onTitleChange = (evn: React.ChangeEvent<HTMLInputElement>) => {
     evn.preventDefault()
@@ -80,6 +82,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
     })
 
     setIsLoading(false)
+    setIsMintSuccess(true)
   }
 
   const isMintButtonDisabled = () => {
@@ -94,11 +97,19 @@ const CreateForm = ({ client, isConnected }: Props) => {
   return (
     <div className="CreateForm">
       <form onSubmit={onSubmit}>
+        {
+          isMintSuccess &&
+          <Alert onClose={() => setIsMintSuccess(false)}>
+            Token Minted: {title}
+          </Alert>
+        }
+
         <TextField
           id="outlined-basic"
           required
           label="NFT Title"
           variant="outlined"
+          value={title}
           onChange={onTitleChange}
           disabled={isLoading}
         />
