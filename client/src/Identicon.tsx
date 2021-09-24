@@ -14,9 +14,9 @@ const Identicon = ({ value, size = '100' }: Props) => {
   }, [value])
 
   return (
-    <span style={{ background: 'white', width: 100, height: 100 }}>
+    <div style={{ background: 'white', width: 100, height: 100 }}>
       <svg data-jdenticon-value={value} height={size} ref={icon} width={size} />
-    </span>
+    </div>
   )
 }
 

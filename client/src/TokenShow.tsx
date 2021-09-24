@@ -139,7 +139,6 @@ const TokenShow = ({ client }: Props) => {
           <Typography variant="body2" color="text.secondary">
             <div className="TokenContent">{tokenContent?.content?.payload}</div>
           </Typography>
-
           <Typography gutterBottom variant="h5" component="div">
             Raw
           </Typography>
@@ -165,7 +164,8 @@ const TokenShow = ({ client }: Props) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you wish to permanently delete this token? This action can&apos;t be undone.
+            Are you sure you wish to permanently delete this token?<br />
+            This action can&apos;t be undone.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
