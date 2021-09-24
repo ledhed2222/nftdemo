@@ -86,7 +86,10 @@ const TokenShow = ({ client }: Props) => {
       url: `/api/tokens/${tokenContent.token.id}`,
     })
 
-    historyRouter.push('/tokens')
+    historyRouter.push(
+      '/tokens', 
+      { burnedTokenTitle: tokenContent?.token.title, isBurnSuccess: true },
+    )
   }
 
   return (
@@ -98,7 +101,7 @@ const TokenShow = ({ client }: Props) => {
           }
           action={
             <IconButton aria-label="settings">
-              <Button variant="outlined" color="error" onClick={burnToken}>
+              <Button sx={{ background: 'white' }} variant="outlined" color="error" onClick={burnToken}>
                 Burn Token
               </Button>
             </IconButton>
