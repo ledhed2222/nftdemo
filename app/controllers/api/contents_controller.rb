@@ -1,18 +1,10 @@
 module Api
   class ContentsController < ApplicationController
-    def show
-      content = Content.find(params[:id])
-      render json: {
-        content: content,
-        token: content.token,
-      }
-    end
-
     def create
-      render json: Content.create(
+      render json: Content.create!(
         title: params[:title],
         payload: params[:payload],
-      ).id
+      )
     end
 
     def exists?

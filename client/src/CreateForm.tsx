@@ -2,27 +2,32 @@ import { RippleAPI, NFTokenStorageOption } from '@ledhed2222/ripple-lib'
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import axios from 'axios'
 import React, { useState } from 'react'
 import { PulseLoader } from 'react-spinners'
+import { useCookies } from 'react-cookie'
+
+import axiosClient from './axiosClient'
+import submit from './xumm'
 
 import './CreateForm.css'
 
 interface Props {
-  client: RippleAPI
-  isConnected: boolean
+  client: RippleAPI | null
 }
 
-// TODO this is ridiculous yes, but these are values from a standalone node so
-// aren't sensitive
-export const ISSUER_SEED = 'sEdV7xTKH4B2XFyW9h4F3VSBYradsnQ'
-const ISSUER_ADDRESS = 'rnvkNkdTzUmgkGcEUTXHChbC3YxhEonTsF'
+const uriToHex = (uri: string): string => (
+  uri.split('').map((char) => (
+    char.charCodeAt(0).toString(16).padStart(2, '0')
+  )).join('').toUpperCase()
+)
 
-const CreateForm = ({ client, isConnected }: Props) => {
+const CreateForm = ({ client }: Props) => {
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isMintSuccess, setIsMintSuccess] = useState<boolean>(false)
+  const [cookies] = useCookies(['account'])
+  const account = cookies.account
 
   const onTitleChange = (evn: React.ChangeEvent<HTMLInputElement>) => {
     evn.preventDefault()
@@ -38,7 +43,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
     evn.preventDefault()
 
     // validations
-    if (!client.isConnected()) {
+    if (!client?.isConnected()) {
       return
     }
     if (title.length === 0) {
@@ -50,34 +55,50 @@ const CreateForm = ({ client, isConnected }: Props) => {
 
     setIsLoading(true)
 
-    // post data onto backend
-    const contentId = (
-      await axios({
-        method: 'post',
-        url: '/api/contents',
-        data: {
-          title,
-          payload: content,
-        },
-      })
-    ).data as number
-    // mint
-    const [tokenID, mintResponse] = (await client.createNFToken(ISSUER_SEED, {
-      issuingAccount: ISSUER_ADDRESS,
-      storageOption: NFTokenStorageOption.CentralizedOffLedger,
-      uri: `${window.location.origin}/tokens/${contentId}`,
-      // TODO switch on environment
-      skipValidation: false,
-    })) as [string, string]
+    // request user sign this TX 
+    // TODO need to show QR code if not pushed
+    const { data: { id: contentId } } = await axiosClient.request({
+      method: 'post',
+      url: '/api/contents',
+      data: {
+        title,
+        payload: content,
+      },
+    })
 
-    // store this
-    await axios({
+    const mintTx = {
+      TransactionType: 'NFTokenMint',
+      TokenTaxon: 0,
+      Flags: 8, // transferable
+      TransferFee: 1,
+      URI: uriToHex(`${window.location.origin}/tokens/${contentId as number}`),
+    }
+    const txResult = await submit(mintTx) as any
+    debugger
+    const nftNode = txResult?.meta?.AffectedNodes.find((node: any) => ( node?.ModifiedNode?.LedgerEntryType === 'NFTokenPage'
+    ))
+    const tokenID = nftNode?.ModifiedNode?.FinalFields?.NonFungibleTokens
+      ?.map((nftoken: Record<string, unknown>) => {
+        return (nftoken as any)?.NonFungibleToken?.TokenID
+      })?.sort((first: string, second: string) => {
+        const firstC = parseInt(first.substring(56), 16)
+        const secondC = parseInt(second.substring(56), 16)
+        if (firstC > secondC) {
+          return 1
+        }
+        return -1
+      })[0]
+
+
+
+    await axiosClient.request({
       method: 'post',
       url: '/api/tokens',
       data: {
-        token_id: tokenID,
-        payload: mintResponse,
+        payload: txResult,
         content_id: contentId,
+        token_id: tokenID,
+        owner: account,
       },
     })
 
@@ -90,7 +111,7 @@ const CreateForm = ({ client, isConnected }: Props) => {
       isLoading ||
       title.length === 0 ||
       content.length === 0 ||
-      !client.isConnected()
+      !client?.isConnected()
     )
   }
 
