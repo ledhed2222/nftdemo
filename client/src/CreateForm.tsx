@@ -1,5 +1,5 @@
 import { RippleAPI, NFTokenStorageOption } from '@ledhed2222/ripple-lib'
-import Alert from '@mui/material/Alert';
+import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import React, { useState } from 'react'
@@ -15,11 +15,12 @@ interface Props {
   client: RippleAPI | null
 }
 
-const uriToHex = (uri: string): string => (
-  uri.split('').map((char) => (
-    char.charCodeAt(0).toString(16).padStart(2, '0')
-  )).join('').toUpperCase()
-)
+const uriToHex = (uri: string): string =>
+  uri
+    .split('')
+    .map((char) => char.charCodeAt(0).toString(16).padStart(2, '0'))
+    .join('')
+    .toUpperCase()
 
 const CreateForm = ({ client }: Props) => {
   const [title, setTitle] = useState<string>('')
@@ -55,9 +56,11 @@ const CreateForm = ({ client }: Props) => {
 
     setIsLoading(true)
 
-    // request user sign this TX 
+    // request user sign this TX
     // TODO need to show QR code if not pushed
-    const { data: { id: contentId } } = await axiosClient.request({
+    const {
+      data: { id: contentId },
+    } = await axiosClient.request({
       method: 'post',
       url: '/api/contents',
       data: {
@@ -73,23 +76,22 @@ const CreateForm = ({ client }: Props) => {
       TransferFee: 1,
       URI: uriToHex(`${window.location.origin}/tokens/${contentId as number}`),
     }
-    const txResult = await submit(mintTx) as any
-    debugger
-    const nftNode = txResult?.meta?.AffectedNodes.find((node: any) => ( node?.ModifiedNode?.LedgerEntryType === 'NFTokenPage'
-    ))
-    const tokenID = nftNode?.ModifiedNode?.FinalFields?.NonFungibleTokens
-      ?.map((nftoken: Record<string, unknown>) => {
+    const txResult = (await submit(mintTx)) as any
+    const nftNode = txResult?.meta?.AffectedNodes.find(
+      (node: any) => node?.ModifiedNode?.LedgerEntryType === 'NFTokenPage',
+    )
+    const tokenID = nftNode?.ModifiedNode?.FinalFields?.NonFungibleTokens?.map(
+      (nftoken: Record<string, unknown>) => {
         return (nftoken as any)?.NonFungibleToken?.TokenID
-      })?.sort((first: string, second: string) => {
-        const firstC = parseInt(first.substring(56), 16)
-        const secondC = parseInt(second.substring(56), 16)
-        if (firstC > secondC) {
-          return 1
-        }
-        return -1
-      })[0]
-
-
+      },
+    )?.sort((first: string, second: string) => {
+      const firstC = parseInt(first.substring(56), 16)
+      const secondC = parseInt(second.substring(56), 16)
+      if (firstC > secondC) {
+        return 1
+      }
+      return -1
+    })[0]
 
     await axiosClient.request({
       method: 'post',
@@ -118,12 +120,11 @@ const CreateForm = ({ client }: Props) => {
   return (
     <div className="CreateForm">
       <form onSubmit={onSubmit}>
-        {
-          isMintSuccess &&
+        {isMintSuccess && (
           <Alert onClose={() => setIsMintSuccess(false)}>
             Token Minted: {title}
           </Alert>
-        }
+        )}
 
         <TextField
           id="outlined-basic"

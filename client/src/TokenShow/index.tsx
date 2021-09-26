@@ -1,11 +1,11 @@
 import { RippleAPI, TransactionJSON } from '@ledhed2222/ripple-lib'
 import Box from '@mui/material/Box'
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
-import CardHeader from '@mui/material/CardHeader';
-import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
+import CardHeader from '@mui/material/CardHeader'
+import Divider from '@mui/material/Divider'
+import Typography from '@mui/material/Typography'
 import React, { useState, useEffect, useContext } from 'react'
 import ReactJson from 'react-json-view'
 import { useParams } from 'react-router-dom'
@@ -72,36 +72,19 @@ const TokenShow = ({ client }: Props) => {
         size={20}
         speedMultiplier={0.75}
       />
-      { client && token &&
+      {client && token && (
         <Card sx={{ boxShadow: 2 }}>
           <CardHeader
-            avatar={
-              <Identicon value={token.payload.transaction.hash} />
-            }
+            avatar={<Identicon value={token.payload.transaction.hash} />}
             title={token.title}
             subheader={token.token_id}
             sx={{ background: '#e6e6e6' }}
           />
           <Divider />
           <CardActions>
-            { !isMyToken &&
-              <BuyOffer
-                token={token}
-                account={account}
-              />
-            }
-            { isMyToken &&
-              <SellOffer
-                token={token}
-                account={account}
-              />
-            }
-            { isMyToken &&
-              <BurnToken
-                token={token}
-                account={account}
-              />
-            }
+            {!isMyToken && <BuyOffer token={token} account={account} />}
+            {isMyToken && <SellOffer token={token} account={account} />}
+            {isMyToken && <BurnToken token={token} account={account} />}
           </CardActions>
           <Divider />
           <CardContent>
@@ -111,11 +94,7 @@ const TokenShow = ({ client }: Props) => {
             <Typography variant="body2" color="text.secondary">
               <div className="TokenContent">{token.content.payload}</div>
             </Typography>
-            <TokenOffers
-              token={token}
-              client={client}
-              account={account}
-            />
+            <TokenOffers token={token} client={client} account={account} />
             <Typography gutterBottom variant="h5" component="div">
               Raw
             </Typography>
@@ -130,7 +109,7 @@ const TokenShow = ({ client }: Props) => {
             </Box>
           </CardContent>
         </Card>
-      }
+      )}
     </div>
   )
 }

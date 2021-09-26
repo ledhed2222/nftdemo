@@ -1,6 +1,6 @@
 import { RippleAPI } from '@ledhed2222/ripple-lib'
 import React, { useState, useEffect } from 'react'
-import Typography from '@mui/material/Typography';
+import Typography from '@mui/material/Typography'
 import { PulseLoader } from 'react-spinners'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -31,7 +31,7 @@ const TokenOffers = ({ account, token, client }: Props) => {
         tokenid: token.token_id,
       })
       setBuyOffers(offers)
-    } catch(_error) {
+    } catch (_error) {
       setBuyOffers([])
     }
   }
@@ -43,17 +43,14 @@ const TokenOffers = ({ account, token, client }: Props) => {
         tokenid: token.token_id,
       })
       setSellOffers(offers)
-    } catch(_error) {
+    } catch (_error) {
       setSellOffers([])
     }
   }
 
   const loadOffers = async () => {
     setIsLoading(true)
-    await Promise.all([
-      loadBuyOffers(),
-      loadSellOffers(),
-    ])
+    await Promise.all([loadBuyOffers(), loadSellOffers()])
     setIsLoading(false)
   }
 
@@ -77,9 +74,7 @@ const TokenOffers = ({ account, token, client }: Props) => {
             <ListItem key={offer.index}>
               <ListItemText primary={`XRP ${offer.amount}`} />
               <ListItemText primary={`From ${offer.owner}`} />
-              { !isMyToken &&
-                <AcceptOffer offer={offer} mode="sell" />
-              }
+              {!isMyToken && <AcceptOffer offer={offer} mode="sell" />}
             </ListItem>
           ))}
         </List>
@@ -91,9 +86,7 @@ const TokenOffers = ({ account, token, client }: Props) => {
             <ListItem key={offer.index}>
               <ListItemText primary={`XRP ${offer.amount}`} />
               <ListItemText primary={`From ${offer.owner}`} />
-              { isMyToken &&
-                <AcceptOffer offer={offer} mode="buy" />
-              }
+              {isMyToken && <AcceptOffer offer={offer} mode="buy" />}
             </ListItem>
           ))}
         </List>

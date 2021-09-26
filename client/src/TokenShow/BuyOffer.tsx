@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import IconButton from '@mui/material/IconButton';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import IconButton from '@mui/material/IconButton'
+import DialogTitle from '@mui/material/DialogTitle'
 import { PulseLoader } from 'react-spinners'
 
 import submit from '../xumm'
@@ -55,16 +55,14 @@ const BuyOffer = ({ account, token }: Props) => {
         color="primary"
         onClick={() => setIsDialogOpen(true)}
       >
-        Make Buy Offer 
+        Make Buy Offer
         <Dialog
           open={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">
-            Make Buy Offer
-          </DialogTitle>
+          <DialogTitle id="alert-dialog-title">Make Buy Offer</DialogTitle>
           <DialogContent>
             <input type="number" min="1" onChange={onAmountChange} />
           </DialogContent>
@@ -75,10 +73,7 @@ const BuyOffer = ({ account, token }: Props) => {
               size={20}
               speedMultiplier={0.75}
             />
-            <Button
-              color="error"
-              onClick={() => setIsDialogOpen(false)}
-            >
+            <Button color="error" onClick={() => setIsDialogOpen(false)}>
               Cancel
             </Button>
             <Button
@@ -97,4 +92,4 @@ const BuyOffer = ({ account, token }: Props) => {
   )
 }
 
-export default BuyOffer 
+export default BuyOffer

@@ -51,8 +51,6 @@ const App = () => {
         //   })[0]
         // addToken(tokenID)
       }
-
-
     })
 
     setClient(THE_CLIENT)
@@ -83,8 +81,9 @@ const App = () => {
       const myTokensResponse = await THE_CLIENT.request('account_nfts', {
         account,
       })
-      const newMyTokens = myTokensResponse.account_nfts
-        .forEach((token: any) => addToken(token?.TokenID))
+      const newMyTokens = myTokensResponse.account_nfts.forEach((token: any) =>
+        addToken(token?.TokenID),
+      )
       //   .reduce((accum: Record<string, true>, token: any) => {
       //     /* eslint-disable no-param-reassign --
       //      * TODO */
@@ -106,18 +105,14 @@ const App = () => {
           your fingers crossed and your seat belt buckled!
         </div>
         <div className="ContentPortal">
-          {ROUTES
-            .filter(({ requiresState }) => {
-              return (
-                requiresState == null ||
-                  (
-                    isLoggedIn ?
-                      requiresState === 'LoggedIn' :
-                      requiresState === 'LoggedOut'
-                )
-              )
-            })
-            .map(({ path, Component }) => (
+          {ROUTES.filter(({ requiresState }) => {
+            return (
+              requiresState == null ||
+              (isLoggedIn
+                ? requiresState === 'LoggedIn'
+                : requiresState === 'LoggedOut')
+            )
+          }).map(({ path, Component }) => (
             <Route exact path={path} key={path}>
               {({ match }) => (
                 <CSSTransition

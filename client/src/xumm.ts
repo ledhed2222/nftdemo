@@ -3,7 +3,9 @@ import deferredPromise from './deferredPromise'
 import STATE from './state'
 import { LedgerTransactionResult } from './types'
 
-const userSubmission = async (websocketUrl: string): Promise<Record<string, unknown>> => {
+const userSubmission = async (
+  websocketUrl: string,
+): Promise<Record<string, unknown>> => {
   return new Promise((resolve, _reject) => {
     const ws = new WebSocket(websocketUrl)
     ws.onmessage = (msg) => {
@@ -16,14 +18,20 @@ const userSubmission = async (websocketUrl: string): Promise<Record<string, unkn
   })
 }
 
-const completedTxResult = async (txHash: string): Promise<LedgerTransactionResult> => {
+const completedTxResult = async (
+  txHash: string,
+): Promise<LedgerTransactionResult> => {
   if (STATE.completedTxHashes[txHash]) {
-    return Promise.resolve(STATE.completedTxHashes[txHash] as LedgerTransactionResult)
+    return Promise.resolve(
+      STATE.completedTxHashes[txHash] as LedgerTransactionResult,
+    )
   }
   return Promise.reject()
 }
 
-const submit = async (payload: Record<string, unknown>): Promise<LedgerTransactionResult> => {
+const submit = async (
+  payload: Record<string, unknown>,
+): Promise<LedgerTransactionResult> => {
   const xummSubmitResponse = await axiosClient.request({
     method: 'post',
     url: '/api/xumm',
@@ -33,10 +41,10 @@ const submit = async (payload: Record<string, unknown>): Promise<LedgerTransacti
   const xummWebsocketUrl = xummSubmitResponse.data.refs.websocket_status
   const signedPayload = await userSubmission(xummWebsocketUrl)
 
-  const xummResult = await axiosClient.request({
+  const xummResult = (await axiosClient.request({
     method: 'get',
     url: `/api/xumm/${signedPayload.payload_uuidv4 as string}`,
-  }) as any
+  })) as any
   const txHash = xummResult.data.response.txid as string
 
   STATE.watchedTxHashes[txHash] = deferredPromise<LedgerTransactionResult>()

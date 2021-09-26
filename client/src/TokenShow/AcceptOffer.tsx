@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import IconButton from '@mui/material/IconButton';
+import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 import { PulseLoader } from 'react-spinners'
 
 import submit from '../xumm'
@@ -42,19 +42,15 @@ const AcceptOffer = ({ offer, mode }: Props) => {
         color="primary"
         onClick={() => setIsDialogOpen(true)}
       >
-        Accept Offer 
+        Accept Offer
         <Dialog
           open={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">
-            Accept Offer
-          </DialogTitle>
-          <DialogContent>
-            Accept offer of XRP {offer.amount}?
-          </DialogContent>
+          <DialogTitle id="alert-dialog-title">Accept Offer</DialogTitle>
+          <DialogContent>Accept offer of XRP {offer.amount}?</DialogContent>
           <DialogActions>
             <PulseLoader
               color="black"
@@ -62,10 +58,7 @@ const AcceptOffer = ({ offer, mode }: Props) => {
               size={20}
               speedMultiplier={0.75}
             />
-            <Button
-              color="error"
-              onClick={() => setIsDialogOpen(false)}
-            >
+            <Button color="error" onClick={() => setIsDialogOpen(false)}>
               Cancel
             </Button>
             <Button
@@ -74,7 +67,7 @@ const AcceptOffer = ({ offer, mode }: Props) => {
               onClick={acceptOffer}
               autoFocus
             >
-              Accept 
+              Accept
             </Button>
           </DialogActions>
         </Dialog>

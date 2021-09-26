@@ -31,7 +31,9 @@ const Logout = ({ client }: Props) => {
   }
 
   return (
-    <button type="button" onClick={doLogout}>Logout</button>
+    <button type="button" onClick={doLogout}>
+      Logout
+    </button>
   )
 }
 

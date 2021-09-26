@@ -55,7 +55,4 @@ const MyTokensProvider: FC = ({ children }) => {
   )
 }
 
-export {
-  MyTokensContext as default,
-  MyTokensProvider,
-}
+export { MyTokensContext as default, MyTokensProvider }

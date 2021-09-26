@@ -44,16 +44,12 @@ const Login = ({ client }: Props) => {
       })
       const account = response.data
 
-      setCookie(
-        'account',
-        account,
-        {
-          sameSite: 'strict',
-          secure: true,
-          maxAge: 604800, // 1 week
-          path: '/',
-        },
-      )
+      setCookie('account', account, {
+        sameSite: 'strict',
+        secure: true,
+        maxAge: 604800, // 1 week
+        path: '/',
+      })
     }
 
     const getQrCodeUrl = async () => {
@@ -83,14 +79,17 @@ const Login = ({ client }: Props) => {
   return (
     <div className="Login">
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <GridLoader color="white" loading={client == null || qrCodeUrl == null} />
+        <GridLoader
+          color="white"
+          loading={client == null || qrCodeUrl == null}
+        />
       </div>
-      { client && qrCodeUrl &&
+      {client && qrCodeUrl && (
         <div>
           Scan this with your XUMM app to log in to your account:
           <img src={qrCodeUrl} alt="Scan me with XUMM" />
         </div>
-      }
+      )}
     </div>
   )
 }

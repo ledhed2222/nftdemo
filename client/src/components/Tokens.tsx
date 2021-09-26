@@ -1,12 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import { styled } from '@mui/material/styles';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-import TableContainer from '@mui/material/TableContainer';
-import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import { styled } from '@mui/material/styles'
+import TableCell, { tableCellClasses } from '@mui/material/TableCell'
+import TableRow from '@mui/material/TableRow'
+import TableContainer from '@mui/material/TableContainer'
+import Paper from '@mui/material/Paper'
 
 import type { Token } from '../TokenList'
 
@@ -22,7 +22,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
-}));
+}))
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
@@ -32,13 +32,21 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:last-child td, &:last-child th': {
     border: 0,
   },
-}));
+}))
 
 const Tokens = ({ tokens }: Props) => {
   return (
     <div className="Tokens">
       {tokens.map((token) => (
-        <TableContainer component={Paper} sx={{ maxWidth: '75%', margin: '0 auto', marginBottom: 5, boxShadow: 5 }}>
+        <TableContainer
+          component={Paper}
+          sx={{
+            maxWidth: '75%',
+            margin: '0 auto',
+            marginBottom: 5,
+            boxShadow: 5,
+          }}
+        >
           <Table sx={{ minWidth: 200 }} aria-label="customized table">
             <TableBody>
               <StyledTableRow key={token.title}>

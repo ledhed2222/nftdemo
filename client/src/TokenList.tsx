@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { GridLoader } from 'react-spinners'
-import Alert from '@mui/material/Alert';
+import Alert from '@mui/material/Alert'
 
 import axiosClient from './axiosClient'
 import Tokens from './components/Tokens'
@@ -70,12 +70,14 @@ const TokenList = () => {
 
   return (
     <div className="TokenList">
-      {
-        isBurnSuccess &&
-        <Alert onClose={() => setIsBurnSuccess(false)} sx={{ maxWidth: '300px', margin: '0 auto', marginBottom: 5 }}>
+      {isBurnSuccess && (
+        <Alert
+          onClose={() => setIsBurnSuccess(false)}
+          sx={{ maxWidth: '300px', margin: '0 auto', marginBottom: 5 }}
+        >
           Token Burned: {burnedTokenTitle}
         </Alert>
-      }
+      )}
       <div style={loaderStyle}>
         <GridLoader color="black" loading={isLoading} />
       </div>

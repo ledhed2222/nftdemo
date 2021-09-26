@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import IconButton from '@mui/material/IconButton';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import IconButton from '@mui/material/IconButton'
+import DialogTitle from '@mui/material/DialogTitle'
 import { useHistory } from 'react-router-dom'
 import { PulseLoader } from 'react-spinners'
 
@@ -41,10 +41,10 @@ const BurnToken = ({ account, token }: Props) => {
     setIsLoading(false)
     setIsDialogOpen(false)
 
-    historyRouter.push(
-      '/my-tokens', 
-      { burnedTokenTitle: token.title, isBurnSuccess: true },
-    )
+    historyRouter.push('/my-tokens', {
+      burnedTokenTitle: token.title,
+      isBurnSuccess: true,
+    })
   }
 
   return (
@@ -62,12 +62,11 @@ const BurnToken = ({ account, token }: Props) => {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">
-            Burn token?
-          </DialogTitle>
+          <DialogTitle id="alert-dialog-title">Burn token?</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Are you sure you wish to permanently delete this token?<br />
+              Are you sure you wish to permanently delete this token?
+              <br />
               This action can&apos;t be undone.
             </DialogContentText>
           </DialogContent>
@@ -78,10 +77,7 @@ const BurnToken = ({ account, token }: Props) => {
               size={20}
               speedMultiplier={0.75}
             />
-            <Button
-              color="error"
-              onClick={() => setIsDialogOpen(false)}
-            >
+            <Button color="error" onClick={() => setIsDialogOpen(false)}>
               Cancel
             </Button>
             <Button

@@ -11,27 +11,22 @@ const NavBar = ({ loggedIn }: Props) => {
   return (
     <nav className="NavBar">
       <ul>
-        {ROUTES
-          .filter(({ navName }) => navName != null)
+        {ROUTES.filter(({ navName }) => navName != null)
           .filter(({ requiresState }) => {
             return (
               requiresState == null ||
-                (
-                  loggedIn ?
-                    requiresState === 'LoggedIn' :
-                    requiresState === 'LoggedOut'
-              )
+              (loggedIn
+                ? requiresState === 'LoggedIn'
+                : requiresState === 'LoggedOut')
             )
           })
-          .map(
-          ({ path, navName }) => (
+          .map(({ path, navName }) => (
             <li key={path}>
               <NavLink exact to={path} activeClassName="currentPage">
                 {navName}
               </NavLink>
             </li>
-          ),
-        )}
+          ))}
       </ul>
     </nav>
   )
