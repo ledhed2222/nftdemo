@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_22_032554) do
+ActiveRecord::Schema.define(version: 2021_09_26_212117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,13 +22,24 @@ ActiveRecord::Schema.define(version: 2021_09_22_032554) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "sessions", force: :cascade do |t|
+    t.string "account", null: false
+    t.string "user_token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account"], name: "index_sessions_on_account", unique: true
+  end
+
   create_table "tokens", force: :cascade do |t|
     t.jsonb "payload", null: false
     t.bigint "content_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "token_id", null: false
+    t.string "owner", null: false
     t.index ["content_id"], name: "index_tokens_on_content_id"
+    t.index ["owner"], name: "index_tokens_on_owner"
+    t.index ["token_id"], name: "index_tokens_on_token_id", unique: true
   end
 
   add_foreign_key "tokens", "contents"

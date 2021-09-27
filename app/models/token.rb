@@ -10,7 +10,7 @@ class Token < ApplicationRecord
   end
 
   def decoded_uri
-    payload.dig(:tx_json, :URI)&.split("")&.each_slice(2)&.map do |pair|
+    payload.dig(:transaction, :URI)&.split("")&.each_slice(2)&.map do |pair|
       pair.join.hex.chr
     end&.join
   end

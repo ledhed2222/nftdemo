@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { GridLoader } from 'react-spinners'
 import Alert from '@mui/material/Alert'
 
 import axiosClient from './axiosClient'
+import MyTokens from './MyTokens'
+
 import Tokens from './components/Tokens'
 
 import './TokenList.css'
@@ -41,9 +43,10 @@ const loaderStyle = {
   justifyContent: 'center',
 }
 
-const TokenList = () => {
+const MyTokensList = () => {
+  const { myTokens } = useContext(MyTokens)
   const [tokens, setTokens] = useState<Token[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isBurnSuccess, setIsBurnSuccess] = useState<boolean>(false)
   const [burnedTokenTitle, setBurnedTokenTitle] = useState<string>()
   const historyRouter = useHistory()
@@ -51,11 +54,19 @@ const TokenList = () => {
 
   useEffect(() => {
     const loadTokens = async () => {
+      if (Object.keys(myTokens).length === 0) {
+        return
+      }
+      setIsLoading(true)
+
       const response = await axiosClient.request({
         method: 'get',
         url: '/api/tokens',
       })
-      const newTokens = response.data as Token[]
+      const newTokens = (response.data as Token[]).filter(
+        (token) => token.token_id in myTokens,
+      )
+
       setTokens(newTokens)
       setIsLoading(false)
 
@@ -66,10 +77,10 @@ const TokenList = () => {
       }
     }
     loadTokens()
-  }, [])
+  }, [myTokens])
 
   return (
-    <div className="TokenList">
+    <div className="MyTokensList">
       {isBurnSuccess && (
         <Alert
           onClose={() => setIsBurnSuccess(false)}
@@ -86,4 +97,4 @@ const TokenList = () => {
   )
 }
 
-export default TokenList
+export default MyTokensList
