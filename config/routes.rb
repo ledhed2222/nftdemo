@@ -1,13 +1,16 @@
 Rails.application.routes.draw do
   namespace :api do
+    resources :token_transactions, only: [:create]
+
     resources :contents, only: [:create]
 
     get "/tokens/:content_id", to: "tokens#show"
-    resources :tokens, only: [:index, :create, :destroy]
+    patch "/tokens/:id/burn", to: "tokens#burn"
+    patch "/tokens/:id/change_owner", to: "tokens#change_owner"
+    resources :tokens, only: [:index, :create]
 
-    resources :sessions, only: [:create] 
     delete "/sessions", to: "sessions#destroy"
-    get "/sessions/start", to: "sessions#start"
+    resources :sessions, only: [:create] 
 
     get "/xumm/:id", to: "xumm#show"
     post "/xumm", to: "xumm#create"

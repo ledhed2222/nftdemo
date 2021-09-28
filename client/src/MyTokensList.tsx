@@ -2,41 +2,16 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { GridLoader } from 'react-spinners'
 import Alert from '@mui/material/Alert'
+import { useCookies } from 'react-cookie'
 
 import axiosClient from './axiosClient'
 import MyTokens from './MyTokens'
 
 import Tokens from './components/Tokens'
 
+import type { Token } from './types'
+
 import './TokenList.css'
-
-interface TokenPayload {
-  transaction: {
-    Fee: string
-    URI: string
-    hash: string
-    Flags: number
-    Account: string
-    Sequence: number
-    TokenTaxon: number
-    TxnSignature: string
-    SigningPubKey: string
-    TransactionType: 'NFTokenMint'
-    LastLedgerSequence: number
-  }
-}
-
-export interface Token {
-  id: number
-  payload: TokenPayload
-  content_id: number
-  created_at: string
-  updated_at: string
-  title: string
-  decoded_uri: string
-  token_id: string
-  owner: string
-}
 
 const loaderStyle = {
   display: 'flex',
@@ -44,49 +19,46 @@ const loaderStyle = {
 }
 
 const MyTokensList = () => {
-  const { myTokens } = useContext(MyTokens)
   const [tokens, setTokens] = useState<Token[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isBurnSuccess, setIsBurnSuccess] = useState<boolean>(false)
-  const [burnedTokenTitle, setBurnedTokenTitle] = useState<string>()
+  const [alertMessage, setAlertMessage] = useState<string>('')
   const historyRouter = useHistory()
   const { state }: any = useLocation<Location>()
+  const [{ account }] = useCookies(['account'])
+
+  const loadTokens = async () => {
+    setIsLoading(true)
+    const response = await axiosClient.request({
+      method: 'get',
+      url: `/api/tokens?owner=${account}`,
+    })
+    setTokens(response.data)
+    setIsLoading(false)
+  }
 
   useEffect(() => {
-    const loadTokens = async () => {
-      if (Object.keys(myTokens).length === 0) {
-        return
-      }
-      setIsLoading(true)
+    if (state?.alertMessage) {
+      setAlertMessage(state.alertMessage)
+      historyRouter.replace({})
+    }
+  }, [])
 
-      const response = await axiosClient.request({
-        method: 'get',
-        url: '/api/tokens',
-      })
-      const newTokens = (response.data as Token[]).filter(
-        (token) => token.token_id in myTokens,
-      )
-
-      setTokens(newTokens)
-      setIsLoading(false)
-
-      if (state?.isBurnSuccess) {
-        setIsBurnSuccess(state.isBurnSuccess)
-        setBurnedTokenTitle(state.burnedTokenTitle)
-        historyRouter.replace({})
-      }
+  useEffect(() => {
+    if (account == null) {
+      setTokens([])
+      return
     }
     loadTokens()
-  }, [myTokens])
+  }, [account])
 
   return (
     <div className="MyTokensList">
-      {isBurnSuccess && (
+      {alertMessage.length > 0 && (
         <Alert
-          onClose={() => setIsBurnSuccess(false)}
+          onClose={() => setAlertMessage('')}
           sx={{ maxWidth: '300px', margin: '0 auto', marginBottom: 5 }}
         >
-          Token Burned: {burnedTokenTitle}
+          {alertMessage}
         </Alert>
       )}
       <div style={loaderStyle}>

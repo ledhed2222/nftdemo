@@ -7,19 +7,26 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import { PulseLoader } from 'react-spinners'
+import { useCookies } from 'react-cookie'
+import { useHistory } from 'react-router-dom'
 
+import axiosClient from '../axiosClient'
 import submit from '../xumm'
 
-import type { Offer } from '../types'
+import type { TokenWithContent, Offer } from '../types'
 
 interface Props {
+  onAccept: () => Promise<void>
   offer: Offer
   mode: 'sell' | 'buy'
+  token: TokenWithContent
 }
 
-const AcceptOffer = ({ offer, mode }: Props) => {
+const AcceptOffer = ({ onAccept, token, offer, mode }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [{ account }] = useCookies(['account'])
+  const historyRouter = useHistory()
 
   const acceptOffer = async () => {
     setIsLoading(true)
@@ -28,10 +35,31 @@ const AcceptOffer = ({ offer, mode }: Props) => {
       TransactionType: 'NFTokenAcceptOffer',
       [mode === 'sell' ? 'SellOffer' : 'BuyOffer']: offer.index,
     }
-    await submit(acceptOfferTx)
+    const txResult = await submit(acceptOfferTx)
+    await Promise.all([
+      axiosClient.request({
+        method: 'post',
+        url: '/api/token_transactions',
+        data: {
+          token_id: token.id,
+          payload: txResult,
+        },
+      }),
+      axiosClient.request({
+        method: 'patch',
+        url: `/api/tokens/${token.id}/change_owner`,
+        data: {
+          owner: account,
+        },
+      }),
+    ])
 
+    onAccept()
     setIsLoading(false)
     setIsDialogOpen(false)
+    historyRouter.push('/my-tokens', {
+      alertMessage: `Token Bought: ${token.title}`,
+    })
   }
 
   return (
