@@ -15,7 +15,6 @@ import { useCookies } from 'react-cookie'
 import axiosClient from '../axiosClient'
 import Identicon from '../Identicon'
 import submit from '../xumm'
-import MyTokens from '../MyTokens'
 
 import type { TokenWithContent, Offer } from '../types'
 

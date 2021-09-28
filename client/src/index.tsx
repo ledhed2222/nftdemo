@@ -2,8 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { CookiesProvider } from 'react-cookie'
 
-import { MyTokensProvider } from './MyTokens'
-
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
@@ -11,9 +9,7 @@ import reportWebVitals from './reportWebVitals'
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
-      <MyTokensProvider>
-        <App />
-      </MyTokensProvider>
+      <App />
     </CookiesProvider>
   </React.StrictMode>,
   window.document.getElementById('root'),
