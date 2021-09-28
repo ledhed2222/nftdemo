@@ -1,4 +1,3 @@
-import { RippleAPI } from '@ledhed2222/ripple-lib'
 import React from 'react'
 import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'

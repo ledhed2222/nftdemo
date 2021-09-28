@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
 import { GridLoader } from 'react-spinners'
-import { RippleAPI } from '@ledhed2222/ripple-lib'
 
 import { requestSignature, signatureResult } from './xumm'
 import axiosClient from './axiosClient'

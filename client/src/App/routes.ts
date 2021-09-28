@@ -4,7 +4,7 @@ import Login from '../Login'
 import Logout from '../Logout'
 import TokenList from '../TokenList'
 import TokenShow from '../TokenShow'
-import MyTokensList from '../MyTokensList'
+import MyTokens from '../MyTokens'
 
 const ROUTES = [
   {
@@ -41,7 +41,7 @@ const ROUTES = [
   {
     path: '/my-tokens',
     navName: 'My Tokens',
-    Component: MyTokensList,
+    Component: MyTokens,
     requiresState: 'LoggedIn',
   },
 ]

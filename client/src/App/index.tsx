@@ -4,7 +4,6 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import { useCookies } from 'react-cookie'
 
-import MyTokens from '../MyTokens'
 import STATE from '../state'
 
 import NavBar from './NavBar'
@@ -18,7 +17,6 @@ const THE_CLIENT = new RippleAPI({ server: SERVER_URL })
 
 const App = () => {
   const [client, setClient] = useState<RippleAPI | null>(null)
-  const { myTokens, addToken } = useContext(MyTokens)
   const [{ account }] = useCookies(['account'])
   const isLoggedIn = account != null
 
@@ -31,25 +29,6 @@ const App = () => {
       const txHash = msg.transaction.hash
       STATE.completedTxHashes[txHash] = msg
       STATE.watchedTxHashes[txHash]?.resolve(txHash)
-      // handle NFT movement for the current account
-      // TODO fix this later using state mgmt with easy-peasy
-      const txType = msg.transaction.TransactionType
-      if (txType === 'NFTokenMint') {
-        // const nftNode = msg?.meta?.AffectedNodes.find((node: any) => (
-        //   node?.ModifiedNode?.LedgerEntryType === 'NFTokenPage'
-        // ))
-        // const tokenID = nftNode?.ModifiedNode?.FinalFields?.NonFungibleTokens
-        //   ?.map((nftoken: Record<string, unknown>) => nftoken?.NonFungibleToken?.TokenID)
-        //   ?.sort((first, second) => {
-        //     const firstC = parseInt(first.substring(56), 16)
-        //     const secondC = parseInt(second.substring(56), 16)
-        //     if (firstC > secondC) {
-        //       return 1
-        //     }
-        //     return -1
-        //   })[0]
-        // addToken(tokenID)
-      }
     })
 
     setClient(THE_CLIENT)
@@ -60,39 +39,35 @@ const App = () => {
     THE_CLIENT.disconnect()
   }
 
+  const doAccountChange = async () => {
+    if (account == null) {
+      return
+    }
+    if (!THE_CLIENT.isConnected()) {
+      await doConnect()
+    }
+    THE_CLIENT.request('subscribe', {
+      accounts: [account],
+    })
+  }
+
+  const doAccountBeforeChange = () => {
+    if (account == null || !THE_CLIENT.isConnected()) {
+      return
+    }
+    THE_CLIENT.request('unsubscribe', {
+      accounts: [account],
+    })
+  }
+
   useEffect(() => {
     doConnect()
     return doDisconnect
   }, [])
 
   useEffect(() => {
-    const doAccountChange = async () => {
-      if (account == null) {
-        return
-      }
-      if (!THE_CLIENT.isConnected()) {
-        await doConnect()
-      }
-      THE_CLIENT.request('subscribe', {
-        accounts: [account],
-      })
-
-      const myTokensResponse = await THE_CLIENT.request('account_nfts', {
-        account,
-      })
-      const newMyTokens = myTokensResponse.account_nfts.forEach((token: any) =>
-        addToken(token?.TokenID),
-      )
-      //   .reduce((accum: Record<string, true>, token: any) => {
-      //     /* eslint-disable no-param-reassign --
-      //      * TODO */
-      //     accum[token?.TokenID] = true
-      //     /* eslint-enable no-param-reassign */
-      //     return accum
-      //   }, {})
-      // setMyTokens(newMyTokens)
-    }
     doAccountChange()
+    return doAccountBeforeChange
   }, [account])
 
   return (

@@ -1,58 +1,71 @@
-import React, { FC, createContext, useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
+import { GridLoader } from 'react-spinners'
+import Alert from '@mui/material/Alert'
+import { useCookies } from 'react-cookie'
 
-interface Tokens {
-  [key: string]: true
+import axiosClient from './axiosClient'
+
+import Tokens from './components/Tokens'
+
+import type { Token } from './types'
+
+import './TokenList.css'
+
+const loaderStyle = {
+  display: 'flex',
+  justifyContent: 'center',
 }
 
-export interface MyTokensType {
-  myTokens: Tokens
-  addToken: (value: string) => void
-  removeToken: (value: string) => void
-  clearTokens: () => void
-}
+const MyTokens = () => {
+  const [tokens, setTokens] = useState<Token[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [alertMessage, setAlertMessage] = useState<string>('')
+  const historyRouter = useHistory()
+  const { state }: any = useLocation<Location>()
+  const [{ account }] = useCookies(['account'])
 
-const MY_TOKENS: Tokens = {}
-
-const addToken: (tokenID: string) => void = (tokenID) => {
-  MY_TOKENS[tokenID] = true
-}
-
-const removeToken: (tokenID: string) => void = (tokenID) => {
-  /* eslint-disable @typescript-eslint/no-dynamic-delete --
-   * this is exactly what we want to do */
-  delete MY_TOKENS[tokenID]
-  /* eslint-enable @typescript-eslint/no-dynamic-delete */
-}
-
-const clearTokens = () => {
-  for (const key of Object.keys(MY_TOKENS)) {
-    /* eslint-disable @typescript-eslint/no-dynamic-delete --
-     * this is exactly what we want to do */
-    delete MY_TOKENS[key]
-    /* eslint-enable @typescript-eslint/no-dynamic-delete */
+  const loadTokens = async () => {
+    setIsLoading(true)
+    const response = await axiosClient.request({
+      method: 'get',
+      url: `/api/tokens?owner=${account}`,
+    })
+    setTokens(response.data)
+    setIsLoading(false)
   }
-}
 
-const MyTokensContext = createContext({
-  myTokens: MY_TOKENS,
-  addToken,
-  removeToken,
-  clearTokens,
-} as MyTokensType)
+  useEffect(() => {
+    if (state?.alertMessage) {
+      setAlertMessage(state.alertMessage)
+      historyRouter.replace({})
+    }
+  }, [])
 
-const MyTokensProvider: FC = ({ children }) => {
-  const value: MyTokensType = {
-    myTokens: MY_TOKENS,
-    addToken,
-    removeToken,
-    clearTokens,
-  }
+  useEffect(() => {
+    if (account == null) {
+      setTokens([])
+      return
+    }
+    loadTokens()
+  }, [account])
 
   return (
-    <MyTokensContext.Provider value={value}>
-      {children}
-    </MyTokensContext.Provider>
+    <div className="MyTokens">
+      {alertMessage.length > 0 && (
+        <Alert
+          onClose={() => setAlertMessage('')}
+          sx={{ maxWidth: '300px', margin: '0 auto', marginBottom: 5 }}
+        >
+          {alertMessage}
+        </Alert>
+      )}
+      <div style={loaderStyle}>
+        <GridLoader color="black" loading={isLoading} />
+      </div>
+      <Tokens tokens={tokens} />
+    </div>
   )
 }
 
-export { MyTokensContext as default, MyTokensProvider }
+export default MyTokens
