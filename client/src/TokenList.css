@@ -15,10 +15,6 @@
   background-color: inherit;
 }
 
-.TokenList .Token:nth-child(even) {
-  background-color: #5d5b5b;
-}
-
 .TokenList .Token .TokenField {
   display: flex;
   width: 100%;
