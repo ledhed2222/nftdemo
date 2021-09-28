@@ -1,4 +1,5 @@
 import { RippleAPI, NFTokenStorageOption } from '@ledhed2222/ripple-lib'
+import { useHistory } from 'react-router-dom'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -6,6 +7,7 @@ import React, { useState } from 'react'
 import { PulseLoader } from 'react-spinners'
 import { useCookies } from 'react-cookie'
 
+import type { Content } from './types'
 import axiosClient from './axiosClient'
 import submit from './xumm'
 
@@ -26,9 +28,8 @@ const CreateForm = ({ client }: Props) => {
   const [title, setTitle] = useState<string>('')
   const [content, setContent] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isMintSuccess, setIsMintSuccess] = useState<boolean>(false)
-  const [cookies] = useCookies(['account'])
-  const account = cookies.account
+  const [{ account }] = useCookies(['account'])
+  const historyRouter = useHistory()
 
   const onTitleChange = (evn: React.ChangeEvent<HTMLInputElement>) => {
     evn.preventDefault()
@@ -58,9 +59,7 @@ const CreateForm = ({ client }: Props) => {
 
     // request user sign this TX
     // TODO need to show QR code if not pushed
-    const {
-      data: { id: contentId },
-    } = await axiosClient.request({
+    const { data } = await axiosClient.request({
       method: 'post',
       url: '/api/contents',
       data: {
@@ -68,44 +67,45 @@ const CreateForm = ({ client }: Props) => {
         payload: content,
       },
     })
+    const contentId = (data as Content).id
 
     const mintTx = {
       TransactionType: 'NFTokenMint',
       TokenTaxon: 0,
       Flags: 8, // transferable
+      // TODO there is a xumm bug that doesn't allow a 0 transferfee
       TransferFee: 1,
-      URI: uriToHex(`${window.location.origin}/tokens/${contentId as number}`),
+      URI: uriToHex(`${window.location.origin}/tokens/${contentId}`),
     }
     const txResult = (await submit(mintTx)) as any
-    const nftNode = txResult?.meta?.AffectedNodes.find(
-      (node: any) => node?.ModifiedNode?.LedgerEntryType === 'NFTokenPage',
-    )
-    const tokenID = nftNode?.ModifiedNode?.FinalFields?.NonFungibleTokens?.map(
-      (nftoken: Record<string, unknown>) => {
-        return (nftoken as any)?.NonFungibleToken?.TokenID
-      },
-    )?.sort((first: string, second: string) => {
-      const firstC = parseInt(first.substring(56), 16)
-      const secondC = parseInt(second.substring(56), 16)
-      if (firstC > secondC) {
-        return 1
-      }
-      return -1
-    })[0]
+    const rawNftNode = txResult?.meta?.AffectedNodes.find((node: any) => (
+      node?.CreatedNode?.LedgerEntryType === 'NFTokenPage' ||
+        node?.ModifiedNode?.LedgerEntryType === 'NFTokenPage'
+    ))
+    const nftNode = rawNftNode.CreatedNode ?? rawNftNode.ModifiedNode
+    const previousTokenIds = nftNode?.PreviousFields?.NonFungibleTokens?.map((token: any) => token?.NonFungibleToken?.TokenID)
+    const previousTokenIdSet = new Set(previousTokenIds)
+    const finalTokenIds = (nftNode.FinalFields ?? nftNode.NewFields)?.NonFungibleTokens?.map((token: any) => token?.NonFungibleToken?.TokenID)
+    const tokenId = finalTokenIds.find((tid: string) => !previousTokenIdSet.has(tid))
+
+    const uri = txResult?.transaction?.URI
 
     await axiosClient.request({
       method: 'post',
       url: '/api/tokens',
       data: {
+        uri,
         payload: txResult,
         content_id: contentId,
-        token_id: tokenID,
+        token_id: tokenId,
         owner: account,
       },
     })
 
     setIsLoading(false)
-    setIsMintSuccess(true)
+    historyRouter.push('/my-tokens', {
+      alertMessage: `Token Minted: ${title}`,
+    })
   }
 
   const isMintButtonDisabled = () => {
@@ -120,12 +120,6 @@ const CreateForm = ({ client }: Props) => {
   return (
     <div className="CreateForm">
       <form onSubmit={onSubmit}>
-        {isMintSuccess && (
-          <Alert onClose={() => setIsMintSuccess(false)}>
-            Token Minted: {title}
-          </Alert>
-        )}
-
         <TextField
           id="outlined-basic"
           required

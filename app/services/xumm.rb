@@ -4,12 +4,6 @@ module Xumm
   XUMM_URI_ROOT = "https://xumm.app/api/v1/platform"
   private_constant :XUMM_URI_ROOT
 
-  def self.sign_in_request
-    submit_payload({
-      "TransactionType" => "SignIn",
-    })
-  end
-
   def self.payload(payload_id)
     uri = URI("#{XUMM_URI_ROOT}/payload/#{payload_id}")
 

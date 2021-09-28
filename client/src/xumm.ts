@@ -3,9 +3,19 @@ import deferredPromise from './deferredPromise'
 import STATE from './state'
 import { LedgerTransactionResult } from './types'
 
-const userSubmission = async (
+export const requestSignature = async (
+  payload: Record<string, unknown>,
+): Promise<Record<string, any>> => {
+  return (await axiosClient.request({
+    method: 'post',
+    url: '/api/xumm',
+    data: { payload },
+  })).data
+}
+
+export const signatureResult = async (
   websocketUrl: string,
-): Promise<Record<string, unknown>> => {
+): Promise<Record<string, any>> => {
   return new Promise((resolve, _reject) => {
     const ws = new WebSocket(websocketUrl)
     ws.onmessage = (msg) => {
@@ -29,21 +39,12 @@ const completedTxResult = async (
   return Promise.reject()
 }
 
-const submit = async (
-  payload: Record<string, unknown>,
+export const confirmedLedgerTx = async (
+  payloadUuid: string,
 ): Promise<LedgerTransactionResult> => {
-  const xummSubmitResponse = await axiosClient.request({
-    method: 'post',
-    url: '/api/xumm',
-    data: { payload },
-  })
-
-  const xummWebsocketUrl = xummSubmitResponse.data.refs.websocket_status
-  const signedPayload = await userSubmission(xummWebsocketUrl)
-
   const xummResult = (await axiosClient.request({
     method: 'get',
-    url: `/api/xumm/${signedPayload.payload_uuidv4 as string}`,
+    url: `/api/xumm/${payloadUuid}`,
   })) as any
   const txHash = xummResult.data.response.txid as string
 
@@ -59,6 +60,17 @@ const submit = async (
   delete STATE.completedTxHashes[txHash]
   /* eslint-enable @typescript-eslint/no-dynamic-delete */
 
+  return result
+}
+
+const submit = async (
+  payload: Record<string, unknown>,
+): Promise<LedgerTransactionResult> => {
+  const xummSubmitResponse = await requestSignature(payload)
+
+  const xummWebsocketUrl = xummSubmitResponse.refs.websocket_status
+  const signedPayload = await signatureResult(xummWebsocketUrl)
+  const result = await confirmedLedgerTx(signedPayload.payload_uuidv4)
   return result
 }
 

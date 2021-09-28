@@ -8,16 +8,18 @@ import IconButton from '@mui/material/IconButton'
 import DialogTitle from '@mui/material/DialogTitle'
 import { PulseLoader } from 'react-spinners'
 
+import axiosClient from '../axiosClient'
 import submit from '../xumm'
 
-import type { TokenResponse } from './index'
+import type { TokenWithContent } from '../types'
 
 interface Props {
-  token: TokenResponse
+  onOffer: () => Promise<void>
+  token: TokenWithContent
   account: string
 }
 
-const BuyOffer = ({ account, token }: Props) => {
+const BuyOffer = ({ account, token, onOffer }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [amount, setAmount] = useState<number | null>(null)
@@ -37,12 +39,21 @@ const BuyOffer = ({ account, token }: Props) => {
       TransactionType: 'NFTokenCreateOffer',
       Account: account,
       Flags: 0, // buy offer
-      TokenID: token.token_id,
+      TokenID: token.xrpl_token_id,
       Amount: `${amount}`,
       Owner: token.owner,
     }
-    await submit(buyOfferTx)
+    const txResult = await submit(buyOfferTx)
+    await axiosClient.request({
+      method: 'post',
+      url: '/api/token_transactions',
+      data: {
+        token_id: token.id,
+        payload: txResult,
+      },
+    })
 
+    onOffer()
     setIsLoading(false)
     setIsDialogOpen(false)
   }

@@ -19,8 +19,7 @@ const THE_CLIENT = new RippleAPI({ server: SERVER_URL })
 const App = () => {
   const [client, setClient] = useState<RippleAPI | null>(null)
   const { myTokens, addToken } = useContext(MyTokens)
-  const [cookies] = useCookies(['account'])
-  const account = cookies.account
+  const [{ account }] = useCookies(['account'])
   const isLoggedIn = account != null
 
   const doConnect = async () => {
@@ -100,19 +99,8 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <NavBar loggedIn={isLoggedIn} />
-        <div className="Disclaimer">
-          Welcome to Ripple NFT minter demo! Super beta! No warranties! Keep
-          your fingers crossed and your seat belt buckled!
-        </div>
         <div className="ContentPortal">
-          {ROUTES.filter(({ requiresState }) => {
-            return (
-              requiresState == null ||
-              (isLoggedIn
-                ? requiresState === 'LoggedIn'
-                : requiresState === 'LoggedOut')
-            )
-          }).map(({ path, Component }) => (
+          {ROUTES.map(({ path, Component }) => (
             <Route exact path={path} key={path}>
               {({ match }) => (
                 <CSSTransition

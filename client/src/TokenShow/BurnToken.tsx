@@ -12,10 +12,10 @@ import { PulseLoader } from 'react-spinners'
 import axiosClient from '../axiosClient'
 import submit from '../xumm'
 
-import type { TokenResponse } from './index'
+import type { TokenWithContent } from '../types'
 
 interface Props {
-  token: TokenResponse
+  token: TokenWithContent
   account: string
 }
 
@@ -30,20 +30,28 @@ const BurnToken = ({ account, token }: Props) => {
     const burnTx = {
       TransactionType: 'NFTokenBurn',
       Account: account,
-      TokenID: token.token_id,
+      TokenID: token.xrpl_token_id,
     }
-    await submit(burnTx)
-    await axiosClient.request({
-      method: 'delete',
-      url: `/api/tokens/${token.id}`,
-    })
+    const txResponse = await submit(burnTx)
+    await Promise.all([
+      axiosClient.request({
+        method: 'post',
+        url: '/api/token_transactions',
+        data: {
+          token_id: token.id,
+          payload: txResponse,
+        },
+      }),
+      axiosClient.request({
+        method: 'patch',
+        url: `/api/tokens/${token.id}/burn`,
+      }),
+    ])
 
     setIsLoading(false)
     setIsDialogOpen(false)
-
     historyRouter.push('/my-tokens', {
-      burnedTokenTitle: token.title,
-      isBurnSuccess: true,
+      alertMessage: `Token Burned: ${token.title}`,
     })
   }
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -8,7 +9,9 @@ import TableRow from '@mui/material/TableRow'
 import TableContainer from '@mui/material/TableContainer'
 import Paper from '@mui/material/Paper'
 
-import type { Token } from '../TokenList'
+import type { Token } from '../types'
+
+import './Tokens.css'
 
 interface Props {
   tokens: Token[]
@@ -39,6 +42,7 @@ const Tokens = ({ tokens }: Props) => {
     <div className="Tokens">
       {tokens.map((token) => (
         <TableContainer
+          className={classnames('Token', { burned: token.burned })}
           component={Paper}
           sx={{
             maxWidth: '75%',
@@ -55,11 +59,13 @@ const Tokens = ({ tokens }: Props) => {
                 </StyledTableCell>
                 <StyledTableCell>{token.title}</StyledTableCell>
               </StyledTableRow>
-              <StyledTableRow key={token.token_id}>
+              <StyledTableRow key={token.xrpl_token_id}>
                 <StyledTableCell component="th" scope="row">
                   <b>Token ID</b>
                 </StyledTableCell>
-                <StyledTableCell>{token.token_id}</StyledTableCell>
+                <StyledTableCell>
+                  {token.burned ? 'Burnt' : token.xrpl_token_id}
+                </StyledTableCell>
               </StyledTableRow>
               <StyledTableRow key={token.decoded_uri}>
                 <StyledTableCell component="th" scope="row">

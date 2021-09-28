@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { Redirect } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
 import { RippleAPI } from '@ledhed2222/ripple-lib'
 
@@ -12,8 +13,8 @@ interface Props {
 
 const Logout = ({ client }: Props) => {
   const { clearTokens } = useContext(MyTokens)
-  const [cookies, _setCookie, removeCookie] = useCookies(['account'])
-  const account = cookies.account
+  const [{ account }, _setCookie, removeCookie] = useCookies(['account'])
+  const isLoggedIn = account != null
 
   const doLogout = async () => {
     await axiosClient.request({
@@ -30,6 +31,9 @@ const Logout = ({ client }: Props) => {
     clearState()
   }
 
+  if (!isLoggedIn) {
+    return <Redirect to="/" />
+  }
   return (
     <button type="button" onClick={doLogout}>
       Logout

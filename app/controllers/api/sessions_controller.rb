@@ -1,9 +1,5 @@
 module Api
   class SessionsController < ApplicationController
-    def start
-      render json: Xumm.sign_in_request
-    end
-
     def create
       xumm_payload = Xumm.payload(params[:payload_id])
       account = xumm_payload.dig(:response, :account)
@@ -15,6 +11,7 @@ module Api
         user_token: user_token,
       )
 
+      cookies[:account] = account
       render json: account
     end
 

@@ -1,3 +1,4 @@
+import Home from '../Home'
 import CreateForm from '../CreateForm'
 import Login from '../Login'
 import Logout from '../Logout'
@@ -6,6 +7,10 @@ import TokenShow from '../TokenShow'
 import MyTokensList from '../MyTokensList'
 
 const ROUTES = [
+  {
+    path: '/',
+    Component: Home,
+  },
   {
     path: '/login',
     navName: 'Login',
@@ -26,7 +31,6 @@ const ROUTES = [
   },
   {
     path: '/tokens/:id',
-    navName: null,
     Component: TokenShow,
   },
   {
