@@ -40,6 +40,7 @@ const TokenShow = ({ client }: Props) => {
   const [sellOffers, setSellOffers] = useState<Offer[]>([])
   const { id } = useParams<Params>()
   const [{ account }] = useCookies(['account'])
+  const isLoggedIn = account != null
   const isMyToken = token && account && token.owner === account
 
   const doLoadToken = async () => {
@@ -107,17 +108,31 @@ const TokenShow = ({ client }: Props) => {
           <CardHeader
             avatar={<Identicon value={token.xrpl_token_id} />}
             title={token.title}
-            subheader={token.burned ? 'Burnt' : `Token ID: ${token.xrpl_token_id}`}
+            subheader={
+              token.burned ? 'Burnt' : `Token ID: ${token.xrpl_token_id}`
+            }
             sx={{ background: '#e6e6e6' }}
           />
           <Divider />
-          {!token.burned &&
+          {!token.burned && isLoggedIn && (
             <CardActions>
-              {!isMyToken && <BuyOffer onOffer={doLoadOffers} token={token} account={account} />}
-              {isMyToken && <SellOffer onOffer={doLoadOffers} token={token} account={account} />}
+              {!isMyToken && (
+                <BuyOffer
+                  onOffer={doLoadOffers}
+                  token={token}
+                  account={account}
+                />
+              )}
+              {isMyToken && (
+                <SellOffer
+                  onOffer={doLoadOffers}
+                  token={token}
+                  account={account}
+                />
+              )}
               {isMyToken && <BurnToken token={token} account={account} />}
             </CardActions>
-          }
+          )}
           <Divider />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">

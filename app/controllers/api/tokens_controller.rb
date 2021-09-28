@@ -23,7 +23,7 @@ module Api
     def create
       Token.new(
         content_id: params[:content_id],
-        xrpl_token_id: params[:token_id],
+        xrpl_token_id: params[:xrpl_token_id],
         owner: params[:owner],
         uri: params[:uri],
       ).token_transactions.build(
