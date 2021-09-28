@@ -6,9 +6,7 @@ const Home = () => {
   const [{ account }] = useCookies(['account'])
   const isLoggedIn = account != null
 
-  return isLoggedIn ?
-    <Redirect to="/create-token" /> :
-    <Redirect to="/login" />
+  return isLoggedIn ? <Redirect to="/create-token" /> : <Redirect to="/login" />
 }
 
 export default Home

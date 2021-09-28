@@ -16,7 +16,9 @@ const Login = () => {
       TransactionType: 'SignIn',
     })
     setQrCodeUrl((signatureRequestResponse as any).refs.qr_png)
-    const signedPayload = await signatureResult(signatureRequestResponse.refs.websocket_status)
+    const signedPayload = await signatureResult(
+      signatureRequestResponse.refs.websocket_status,
+    )
     const payloadId = signedPayload.payload_uuidv4
 
     const response = await axiosClient.request({
@@ -47,14 +49,11 @@ const Login = () => {
   return (
     <div className="Login">
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <GridLoader
-          color="white"
-          loading={qrCodeUrl == null}
-        />
+        <GridLoader color="white" loading={qrCodeUrl == null} />
       </div>
       {qrCodeUrl && (
         <div>
-          Scan this with your XUMM app to log in to your account:
+          <p>Scan this with your XUMM app to log in to your account:</p>
           <img src={qrCodeUrl} alt="Scan me with XUMM" />
         </div>
       )}

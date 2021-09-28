@@ -78,15 +78,22 @@ const CreateForm = ({ client }: Props) => {
       URI: uriToHex(`${window.location.origin}/tokens/${contentId}`),
     }
     const txResult = (await submit(mintTx)) as any
-    const rawNftNode = txResult?.meta?.AffectedNodes.find((node: any) => (
-      node?.CreatedNode?.LedgerEntryType === 'NFTokenPage' ||
-        node?.ModifiedNode?.LedgerEntryType === 'NFTokenPage'
-    ))
+    const rawNftNode = txResult?.meta?.AffectedNodes.find(
+      (node: any) =>
+        node?.CreatedNode?.LedgerEntryType === 'NFTokenPage' ||
+        node?.ModifiedNode?.LedgerEntryType === 'NFTokenPage',
+    )
     const nftNode = rawNftNode.CreatedNode ?? rawNftNode.ModifiedNode
-    const previousTokenIds = nftNode?.PreviousFields?.NonFungibleTokens?.map((token: any) => token?.NonFungibleToken?.TokenID)
+    const previousTokenIds = nftNode?.PreviousFields?.NonFungibleTokens?.map(
+      (token: any) => token?.NonFungibleToken?.TokenID,
+    )
     const previousTokenIdSet = new Set(previousTokenIds)
-    const finalTokenIds = (nftNode.FinalFields ?? nftNode.NewFields)?.NonFungibleTokens?.map((token: any) => token?.NonFungibleToken?.TokenID)
-    const tokenId = finalTokenIds.find((tid: string) => !previousTokenIdSet.has(tid))
+    const finalTokenIds = (
+      nftNode.FinalFields ?? nftNode.NewFields
+    )?.NonFungibleTokens?.map((token: any) => token?.NonFungibleToken?.TokenID)
+    const tokenId = finalTokenIds.find(
+      (tid: string) => !previousTokenIdSet.has(tid),
+    )
 
     const uri = txResult?.transaction?.URI
 
@@ -97,7 +104,7 @@ const CreateForm = ({ client }: Props) => {
         uri,
         payload: txResult,
         content_id: contentId,
-        token_id: tokenId,
+        xrpl_token_id: tokenId,
         owner: account,
       },
     })

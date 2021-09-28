@@ -16,7 +16,14 @@ interface Props {
   account: string
 }
 
-const TokenOffers = ({ onAcceptOffer, account, token, sellOffers, buyOffers }: Props) => {
+const TokenOffers = ({
+  onAcceptOffer,
+  account,
+  token,
+  sellOffers,
+  buyOffers,
+}: Props) => {
+  const isLoggedIn = account != null
   const isMyToken = token && account && token.owner === account
 
   return (
@@ -29,7 +36,14 @@ const TokenOffers = ({ onAcceptOffer, account, token, sellOffers, buyOffers }: P
             <ListItem key={offer.index}>
               <ListItemText primary={`XRP ${offer.amount}`} />
               <ListItemText primary={`From ${offer.owner}`} />
-              {!isMyToken && <AcceptOffer onAccept={onAcceptOffer} token={token} offer={offer} mode="sell" />}
+              {isLoggedIn && !isMyToken && (
+                <AcceptOffer
+                  onAccept={onAcceptOffer}
+                  token={token}
+                  offer={offer}
+                  mode="sell"
+                />
+              )}
             </ListItem>
           ))}
         </List>
@@ -41,7 +55,14 @@ const TokenOffers = ({ onAcceptOffer, account, token, sellOffers, buyOffers }: P
             <ListItem key={offer.index}>
               <ListItemText primary={`XRP ${offer.amount}`} />
               <ListItemText primary={`From ${offer.owner}`} />
-              {isMyToken && <AcceptOffer onAccept={onAcceptOffer} token={token} offer={offer} mode="buy" />}
+              {isLoggedIn && isMyToken && (
+                <AcceptOffer
+                  onAccept={onAcceptOffer}
+                  token={token}
+                  offer={offer}
+                  mode="buy"
+                />
+              )}
             </ListItem>
           ))}
         </List>

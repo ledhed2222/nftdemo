@@ -6,11 +6,13 @@ import { LedgerTransactionResult } from './types'
 export const requestSignature = async (
   payload: Record<string, unknown>,
 ): Promise<Record<string, any>> => {
-  return (await axiosClient.request({
-    method: 'post',
-    url: '/api/xumm',
-    data: { payload },
-  })).data
+  return (
+    await axiosClient.request({
+      method: 'post',
+      url: '/api/xumm',
+      data: { payload },
+    })
+  ).data
 }
 
 export const signatureResult = async (

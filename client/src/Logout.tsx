@@ -1,9 +1,12 @@
 import React, { useContext } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
+import Button from '@mui/material/Button'
 
 import { clearState } from './state'
 import axiosClient from './axiosClient'
+
+import './Logout.css'
 
 const Logout = () => {
   const [{ account }, _setCookie, removeCookie] = useCookies(['account'])
@@ -22,9 +25,16 @@ const Logout = () => {
     return <Redirect to="/" />
   }
   return (
-    <button type="button" onClick={doLogout}>
-      Logout
-    </button>
+    <div className="Logout">
+      <Button
+        className="LogoutButton"
+        variant="contained"
+        type="button"
+        onClick={doLogout}
+      >
+        Logout 
+      </Button>
+    </div>
   )
 }
 
