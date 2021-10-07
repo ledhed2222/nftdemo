@@ -2,12 +2,12 @@ module Api
   class TokensController < ApplicationController
     def index
       # we need to eagerly load the content to avoid N+1
-      relation = Token.all.includes(:content)
-      if params[:owner]
-        relation = relation.where(owner: params[:owner])
-      else
-        relation = relation.where(burned: false)
-      end
+      relation = Token.all.includes(:content).order(created_at: :asc)
+      relation = if params[:owner]
+                   relation.where(owner: params[:owner])
+                 else
+                   relation.where(burned: false)
+                 end
       render json: relation
     end
 

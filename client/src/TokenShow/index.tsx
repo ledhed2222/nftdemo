@@ -118,14 +118,14 @@ const TokenShow = ({ client }: Props) => {
             <CardActions>
               {!isMyToken && (
                 <BuyOffer
-                  onOffer={doLoadOffers}
+                  onOffer={doLoadToken}
                   token={token}
                   account={account}
                 />
               )}
               {isMyToken && (
                 <SellOffer
-                  onOffer={doLoadOffers}
+                  onOffer={doLoadToken}
                   token={token}
                   account={account}
                 />

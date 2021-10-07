@@ -1,3 +1,4 @@
+import { dropsToXrp } from '@ledhed2222/ripple-lib'
 import React, { useState } from 'react'
 import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
@@ -78,7 +79,7 @@ const AcceptOffer = ({ onAccept, token, offer, mode }: Props) => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">Accept Offer</DialogTitle>
-          <DialogContent>Accept offer of XRP {offer.amount}?</DialogContent>
+          <DialogContent>Accept offer of XRP {dropsToXrp(offer.amount)}?</DialogContent>
           <DialogActions>
             <PulseLoader
               color="black"

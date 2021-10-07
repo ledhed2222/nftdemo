@@ -1,3 +1,4 @@
+import { xrpToDrops } from '@ledhed2222/ripple-lib'
 import React, { useState } from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -40,7 +41,7 @@ const BuyOffer = ({ account, token, onOffer }: Props) => {
       Account: account,
       Flags: 0, // buy offer
       TokenID: token.xrpl_token_id,
-      Amount: `${amount}`,
+      Amount: `${xrpToDrops(amount)}`,
       Owner: token.owner,
     }
     const txResult = await submit(buyOfferTx)
@@ -75,7 +76,7 @@ const BuyOffer = ({ account, token, onOffer }: Props) => {
         >
           <DialogTitle id="alert-dialog-title">Make Buy Offer</DialogTitle>
           <DialogContent>
-            <input type="number" min="1" onChange={onAmountChange} />
+            <input type="number" min="1" onChange={onAmountChange} value={amount ?? `${amount}`} />
           </DialogContent>
           <DialogActions>
             <PulseLoader
