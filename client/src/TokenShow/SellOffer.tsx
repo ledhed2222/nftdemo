@@ -1,3 +1,4 @@
+import { xrpToDrops } from '@ledhed2222/ripple-lib'
 import React, { useState } from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -40,7 +41,7 @@ const SellOffer = ({ account, token, onOffer }: Props) => {
       Account: account,
       Flags: 1, // sell offer
       TokenID: token.xrpl_token_id,
-      Amount: `${amount}`,
+      Amount: `${xrpToDrops(amount)}`,
     }
     const txResult = await submit(sellOfferTx)
     await axiosClient.request({
@@ -74,7 +75,7 @@ const SellOffer = ({ account, token, onOffer }: Props) => {
         >
           <DialogTitle id="alert-dialog-title">Make Sell Offer</DialogTitle>
           <DialogContent>
-            <input type="number" min="1" onChange={onAmountChange} />
+            <input type="number" min="1" onChange={onAmountChange} value={amount ?? `${amount}`} />
           </DialogContent>
           <DialogActions>
             <PulseLoader

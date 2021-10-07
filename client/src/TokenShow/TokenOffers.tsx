@@ -1,3 +1,4 @@
+import { dropsToXrp } from '@ledhed2222/ripple-lib'
 import React from 'react'
 import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
@@ -34,7 +35,7 @@ const TokenOffers = ({
         <List>
           {sellOffers.map((offer) => (
             <ListItem key={offer.index}>
-              <ListItemText primary={`XRP ${offer.amount}`} />
+              <ListItemText primary={`XRP ${dropsToXrp(offer.amount)}`} />
               <ListItemText primary={`From ${offer.owner}`} />
               {isLoggedIn && !isMyToken && (
                 <AcceptOffer
@@ -53,7 +54,7 @@ const TokenOffers = ({
         <List>
           {buyOffers.map((offer) => (
             <ListItem key={offer.index}>
-              <ListItemText primary={`XRP ${offer.amount}`} />
+              <ListItemText primary={`XRP ${dropsToXrp(offer.amount)}`} />
               <ListItemText primary={`From ${offer.owner}`} />
               {isLoggedIn && isMyToken && (
                 <AcceptOffer
