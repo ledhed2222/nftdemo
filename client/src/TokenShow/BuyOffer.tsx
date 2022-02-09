@@ -1,4 +1,3 @@
-import { xrpToDrops } from '@ledhed2222/ripple-lib'
 import React, { useState } from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -8,9 +7,10 @@ import DialogContentText from '@mui/material/DialogContentText'
 import IconButton from '@mui/material/IconButton'
 import DialogTitle from '@mui/material/DialogTitle'
 import { PulseLoader } from 'react-spinners'
+import { xrpToDrops } from 'xrpl'
 
 import axiosClient from '../axiosClient'
-import submit from '../xumm'
+import { submit } from '../xumm'
 
 import type { TokenWithContent } from '../types'
 

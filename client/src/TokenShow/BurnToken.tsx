@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom'
 import { PulseLoader } from 'react-spinners'
 
 import axiosClient from '../axiosClient'
-import submit from '../xumm'
+import { submit } from '../xumm'
 
 import type { TokenWithContent } from '../types'
 

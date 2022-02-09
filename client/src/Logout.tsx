@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
 import Button from '@mui/material/Button'
 
-import { clearState } from './state'
+import { clearState } from './STATE'
 import axiosClient from './axiosClient'
 
 import './Logout.css'

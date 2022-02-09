@@ -1,22 +1,22 @@
-import { RippleAPI } from '@ledhed2222/ripple-lib'
 import React, { useEffect, useState, useContext } from 'react'
 import { BrowserRouter, Route } from 'react-router-dom'
-import { CSSTransition } from 'react-transition-group'
+import { CSSTransition as CST } from 'react-transition-group'
 import { useCookies } from 'react-cookie'
+import { Client } from 'xrpl'
 
-import STATE from '../state'
+import STATE from '../STATE'
 
 import NavBar from './NavBar'
-import ROUTES from './routes'
+import ROUTES from './ROUTES'
 
 import './index.css'
 
 // this is nik's development server
-const SERVER_URL = 'wss://uhm.solike.wtf:7007'
-const THE_CLIENT = new RippleAPI({ server: SERVER_URL })
+const SERVER_URL = 'wss://xls20-sandbox.rippletest.net:51233'
+const THE_CLIENT = new Client(SERVER_URL)
 
 const App = () => {
-  const [client, setClient] = useState<RippleAPI | null>(null)
+  const [client, setClient] = useState<Client | null>(null)
   const [{ account }] = useCookies(['account'])
   const isLoggedIn = account != null
 
@@ -46,7 +46,8 @@ const App = () => {
     if (!THE_CLIENT.isConnected()) {
       await doConnect()
     }
-    THE_CLIENT.request('subscribe', {
+    THE_CLIENT.request({
+      command: 'subscribe',
       accounts: [account],
     })
   }
@@ -55,7 +56,8 @@ const App = () => {
     if (account == null || !THE_CLIENT.isConnected()) {
       return
     }
-    THE_CLIENT.request('unsubscribe', {
+    THE_CLIENT.request({
+      command: 'unsubscribe',
       accounts: [account],
     })
   }
@@ -78,7 +80,7 @@ const App = () => {
           {ROUTES.map(({ path, Component }) => (
             <Route exact path={path} key={path}>
               {({ match }) => (
-                <CSSTransition
+                <CST
                   in={match != null}
                   timeout={300}
                   classNames="fade"
@@ -87,7 +89,7 @@ const App = () => {
                   <div className="Content">
                     <Component client={client} />
                   </div>
-                </CSSTransition>
+                </CST>
               )}
             </Route>
           ))}

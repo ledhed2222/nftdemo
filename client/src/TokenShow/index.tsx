@@ -1,4 +1,3 @@
-import { RippleAPI, TransactionJSON } from '@ledhed2222/ripple-lib'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -11,10 +10,11 @@ import ReactJson from 'react-json-view'
 import { useParams } from 'react-router-dom'
 import { PulseLoader } from 'react-spinners'
 import { useCookies } from 'react-cookie'
+import { Client } from 'xrpl'
 
 import axiosClient from '../axiosClient'
 import Identicon from '../Identicon'
-import submit from '../xumm'
+import { submit } from '../xumm'
 
 import type { TokenWithContent, Offer } from '../types'
 
@@ -26,7 +26,7 @@ import TokenOffers from './TokenOffers'
 import './index.css'
 
 interface Props {
-  client: RippleAPI | null
+  client: Client | null
 }
 
 interface Params {
@@ -58,9 +58,10 @@ const TokenShow = ({ client }: Props) => {
       return
     }
     try {
-      const { offers } = await client.request('nft_buy_offers', {
+      const { result: { offers } } = await client.request({
+        command: 'nft_buy_offers',
         tokenid: token.xrpl_token_id,
-      })
+      }) as any
       setBuyOffers(offers)
     } catch (_error) {
       setBuyOffers([])
@@ -72,9 +73,10 @@ const TokenShow = ({ client }: Props) => {
       return
     }
     try {
-      const { offers } = await client.request('nft_sell_offers', {
+      const { result: { offers } } = await client.request({
+        command: 'nft_sell_offers',
         tokenid: token.xrpl_token_id,
-      })
+      }) as any
       setSellOffers(offers)
     } catch (_error) {
       setSellOffers([])
