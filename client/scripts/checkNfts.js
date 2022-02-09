@@ -1,10 +1,10 @@
-const { RippleAPI, xrpToDrops } = require('@ledhed2222/ripple-lib')
+const { Client, xrpToDrops } = require('xrpl')
 const rippleKeypairs = require('ripple-keypairs')
 
 // this is nik's development server
 const serverUri = 'ws://71.38.165.199:6006'
 // const serverUri = 'wss://uhm.solike.wtf:7007'
-const client = new RippleAPI({server: serverUri})
+const client = new Client(serverUri)
 
 // these are the values of the 'root' account for standalone mode
 const ISSUER_ADDRESS = 'rpF8Fp5XzgurLvtFZvMddToHYu2DwXsRY7'

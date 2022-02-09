@@ -1,6 +1,6 @@
 import axiosClient from './axiosClient'
 import deferredPromise from './deferredPromise'
-import STATE from './state'
+import STATE from './STATE'
 import { LedgerTransactionResult } from './types'
 
 export const requestSignature = async (
@@ -65,7 +65,7 @@ export const confirmedLedgerTx = async (
   return result
 }
 
-const submit = async (
+export const submit = async (
   payload: Record<string, unknown>,
 ): Promise<LedgerTransactionResult> => {
   const xummSubmitResponse = await requestSignature(payload)
@@ -75,5 +75,3 @@ const submit = async (
   const result = await confirmedLedgerTx(signedPayload.payload_uuidv4)
   return result
 }
-
-export default submit

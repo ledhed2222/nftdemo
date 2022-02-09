@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-import ROUTES from './routes'
+import ROUTES from './ROUTES'
 
 interface Props {
   loggedIn: boolean

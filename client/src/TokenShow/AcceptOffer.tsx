@@ -1,4 +1,3 @@
-import { dropsToXrp } from '@ledhed2222/ripple-lib'
 import React, { useState } from 'react'
 import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
@@ -10,9 +9,10 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { PulseLoader } from 'react-spinners'
 import { useCookies } from 'react-cookie'
 import { useHistory } from 'react-router-dom'
+import { dropsToXrp } from 'xrpl'
 
 import axiosClient from '../axiosClient'
-import submit from '../xumm'
+import { submit } from '../xumm'
 
 import type { TokenWithContent, Offer } from '../types'
 

@@ -1,4 +1,3 @@
-import { RippleAPI, NFTokenStorageOption } from '@ledhed2222/ripple-lib'
 import { useHistory } from 'react-router-dom'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
@@ -6,15 +5,16 @@ import TextField from '@mui/material/TextField'
 import React, { useState } from 'react'
 import { PulseLoader } from 'react-spinners'
 import { useCookies } from 'react-cookie'
+import { Client } from 'xrpl'
 
 import type { Content } from './types'
 import axiosClient from './axiosClient'
-import submit from './xumm'
+import { submit } from './xumm'
 
 import './CreateForm.css'
 
 interface Props {
-  client: RippleAPI | null
+  client: Client | null
 }
 
 const uriToHex = (uri: string): string =>

@@ -11,11 +11,7 @@ module Xumm
       inject_headers_into(req)
     end
 
-    Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-      http.request(request)
-    end.yield_self do |response|
-      JSON.parse(response.body)
-    end.with_indifferent_access
+    do_send(uri, request)
   end
 
   def self.submit_payload(payload, user_token: nil)
@@ -29,12 +25,17 @@ module Xumm
       })
     end
 
+    do_send(uri, request)
+  end
+
+  def self.do_send(uri, request)
     Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
       http.request(request)
     end.yield_self do |response|
       JSON.parse(response.body)
     end.with_indifferent_access
   end
+  private_class_method :do_send
 
   def self.inject_headers_into(request)
     request["Content-Type"] = "application/json"
