@@ -11,7 +11,7 @@ import ROUTES from './ROUTES'
 
 import './index.css'
 
-// this is nik's development server
+// this is the NFT sandbox
 const SERVER_URL = 'wss://xls20-sandbox.rippletest.net:51233'
 const THE_CLIENT = new Client(SERVER_URL)
 
