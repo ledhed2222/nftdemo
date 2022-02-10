@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { GridLoader } from 'react-spinners'
 
-import axiosClient from './axiosClient'
-import Tokens from './components/Tokens'
+import Tokens from '../components/Tokens'
+import axiosClient from '../lib/axiosClient'
+import type { Token } from '../types'
 
-import type { Token } from './types'
-
-import './TokenList.css'
+import './index.css'
 
 const loaderStyle = {
   display: 'flex',

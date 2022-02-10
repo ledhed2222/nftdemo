@@ -1,13 +1,13 @@
-import React from 'react'
-import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
+import Typography from '@mui/material/Typography'
+import React from 'react'
 import { dropsToXrp } from 'xrpl'
 
-import AcceptOffer from './AcceptOffer'
-
 import type { TokenWithContent, Offer } from '../types'
+
+import AcceptOffer from './AcceptOffer'
 
 interface Props {
   onAcceptOffer: () => Promise<void>

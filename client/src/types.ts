@@ -1,31 +1,4 @@
-interface ModifiedNode {
-  ModifiedNode: {
-    FinalFields: Array<Record<string, unknown>>
-    LedgerEntryType: string
-    LedgerIndex: string
-    PreviousFields: Array<Record<string, unknown>>
-    PreviousTxnID: string
-    PreviousTxnLgrSeq: number
-  }
-}
-
-// Returned from ledger when transaction validated
-export interface LedgerTransactionResult {
-  engine_result: string
-  engine_result_code: number
-  engine_result_message: string
-  ledger_hash: string
-  ledger_index: number
-  meta: {
-    AffectedNodes: ModifiedNode[]
-    TransactionIndex: number
-    TransactionResult: string
-  }
-  status: string
-  transaction: Record<string, unknown>
-  type: string
-  validated: boolean
-}
+import { TransactionStream } from 'xrpl'
 
 // Returned from ledger in `nft_buy_offers` and `nft_sell_offers`
 export interface Offer {
@@ -33,22 +6,6 @@ export interface Offer {
   flags: number
   index: string
   owner: string
-}
-
-interface TokenPayload {
-  transaction: {
-    Fee: string
-    URI: string
-    hash: string
-    Flags: number
-    Account: string
-    Sequence: number
-    TokenTaxon: number
-    TxnSignature: string
-    SigningPubKey: string
-    TransactionType: 'NFTokenMint'
-    LastLedgerSequence: number
-  }
 }
 
 // Returned by GET `/api/tokens`
@@ -79,7 +36,7 @@ interface TokenTransaction {
   token_id: number
   created_at: string
   updated_at: string
-  payload: LedgerTransactionResult
+  payload: TransactionStream
 }
 
 // Returned by GET `/api/tokens/:id`

@@ -1,21 +1,20 @@
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import React, { useState, useEffect, useContext } from 'react'
+import { useCookies } from 'react-cookie'
 import ReactJson from 'react-json-view'
 import { useParams } from 'react-router-dom'
 import { PulseLoader } from 'react-spinners'
-import { useCookies } from 'react-cookie'
-import { Client } from 'xrpl'
+import { Client, NFTBuyOffersResponse, NFTSellOffersResponse } from 'xrpl'
 
-import axiosClient from '../axiosClient'
-import Identicon from '../Identicon'
-import { submit } from '../xumm'
-
+import Identicon from '../components/Identicon'
+import axiosClient from '../lib/axiosClient'
+import { submit } from '../lib/xumm'
 import type { TokenWithContent, Offer } from '../types'
 
 import BurnToken from './BurnToken'
@@ -58,11 +57,13 @@ const TokenShow = ({ client }: Props) => {
       return
     }
     try {
-      const { result: { offers } } = await client.request({
+      const {
+        result: { offers },
+      } = (await client.request({
         command: 'nft_buy_offers',
         tokenid: token.xrpl_token_id,
-      }) as any
-      setBuyOffers(offers)
+      })) as NFTBuyOffersResponse
+      setBuyOffers(offers as Offer[])
     } catch (_error) {
       setBuyOffers([])
     }
@@ -73,11 +74,13 @@ const TokenShow = ({ client }: Props) => {
       return
     }
     try {
-      const { result: { offers } } = await client.request({
+      const {
+        result: { offers },
+      } = (await client.request({
         command: 'nft_sell_offers',
         tokenid: token.xrpl_token_id,
-      }) as any
-      setSellOffers(offers)
+      })) as NFTSellOffersResponse
+      setSellOffers(offers as Offer[])
     } catch (_error) {
       setSellOffers([])
     }
@@ -162,7 +165,7 @@ const TokenShow = ({ client }: Props) => {
             {token.transactions.map((transaction) => (
               <>
                 <Typography gutterBottom variant="h6" component="div">
-                  {(transaction as any).payload.transaction.TransactionType}
+                  {transaction.payload.transaction.TransactionType}
                 </Typography>
                 <Box sx={{ boxShadow: 3 }}>
                   <ReactJson

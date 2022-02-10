@@ -1,9 +1,10 @@
-import type { DeferredPromise } from './deferredPromise'
-import type { LedgerTransactionResult } from './types'
+import type { TransactionStream } from 'xrpl'
+
+import type { DeferredPromise } from './lib/deferredPromise'
 
 export interface State {
-  watchedTxHashes: Record<string, DeferredPromise<LedgerTransactionResult>>
-  completedTxHashes: Record<string, LedgerTransactionResult>
+  watchedTxHashes: Record<string, DeferredPromise<TransactionStream>>
+  completedTxHashes: Record<string, TransactionStream>
 }
 
 const INITIAL_STATE: State = {

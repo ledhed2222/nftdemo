@@ -1,17 +1,17 @@
-import React from 'react'
-import classnames from 'classnames'
-import { Link } from 'react-router-dom'
+import Paper from '@mui/material/Paper'
+import { styled } from '@mui/material/styles'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
-import { styled } from '@mui/material/styles'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
-import TableRow from '@mui/material/TableRow'
 import TableContainer from '@mui/material/TableContainer'
-import Paper from '@mui/material/Paper'
+import TableRow from '@mui/material/TableRow'
+import classnames from 'classnames'
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-import type { Token } from '../types'
+import type { Token } from '../../types'
 
-import './Tokens.css'
+import './index.css'
 
 interface Props {
   tokens: Token[]
@@ -50,6 +50,7 @@ const Tokens = ({ tokens }: Props) => {
             marginBottom: 5,
             boxShadow: 5,
           }}
+          key={token.id}
         >
           <Table sx={{ minWidth: 200 }} aria-label="customized table">
             <TableBody>

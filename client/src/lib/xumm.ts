@@ -1,7 +1,9 @@
+import { TransactionStream } from 'xrpl'
+
+import STATE from '../STATE'
+
 import axiosClient from './axiosClient'
 import deferredPromise from './deferredPromise'
-import STATE from './STATE'
-import { LedgerTransactionResult } from './types'
 
 export const requestSignature = async (
   payload: Record<string, unknown>,
@@ -32,25 +34,23 @@ export const signatureResult = async (
 
 const completedTxResult = async (
   txHash: string,
-): Promise<LedgerTransactionResult> => {
+): Promise<TransactionStream> => {
   if (STATE.completedTxHashes[txHash]) {
-    return Promise.resolve(
-      STATE.completedTxHashes[txHash] as LedgerTransactionResult,
-    )
+    return Promise.resolve(STATE.completedTxHashes[txHash] as TransactionStream)
   }
   return Promise.reject()
 }
 
 export const confirmedLedgerTx = async (
   payloadUuid: string,
-): Promise<LedgerTransactionResult> => {
+): Promise<TransactionStream> => {
   const xummResult = (await axiosClient.request({
     method: 'get',
     url: `/api/xumm/${payloadUuid}`,
   })) as any
   const txHash = xummResult.data.response.txid as string
 
-  STATE.watchedTxHashes[txHash] = deferredPromise<LedgerTransactionResult>()
+  STATE.watchedTxHashes[txHash] = deferredPromise<TransactionStream>()
   const result = await Promise.any([
     completedTxResult(txHash),
     STATE.watchedTxHashes[txHash].promise,
@@ -67,7 +67,7 @@ export const confirmedLedgerTx = async (
 
 export const submit = async (
   payload: Record<string, unknown>,
-): Promise<LedgerTransactionResult> => {
+): Promise<TransactionStream> => {
   const xummSubmitResponse = await requestSignature(payload)
 
   const xummWebsocketUrl = xummSubmitResponse.refs.websocket_status

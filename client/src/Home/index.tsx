@@ -1,6 +1,6 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
+import { Redirect } from 'react-router-dom'
 
 const Home = () => {
   const [{ account }] = useCookies(['account'])

@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
-import { Redirect } from 'react-router-dom'
-import { useCookies } from 'react-cookie'
 import Button from '@mui/material/Button'
+import React, { useContext } from 'react'
+import { useCookies } from 'react-cookie'
+import { Redirect } from 'react-router-dom'
 
-import { clearState } from './STATE'
-import axiosClient from './axiosClient'
+import axiosClient from '../lib/axiosClient'
+import { clearState } from '../STATE'
 
-import './Logout.css'
+import './index.css'
 
 const Logout = () => {
   const [{ account }, _setCookie, removeCookie] = useCookies(['account'])
@@ -32,7 +32,7 @@ const Logout = () => {
         type="button"
         onClick={doLogout}
       >
-        Logout 
+        Logout
       </Button>
     </div>
   )

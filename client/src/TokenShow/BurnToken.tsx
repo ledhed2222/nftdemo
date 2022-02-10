@@ -1,17 +1,16 @@
-import React, { useState } from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
-import IconButton from '@mui/material/IconButton'
 import DialogTitle from '@mui/material/DialogTitle'
+import IconButton from '@mui/material/IconButton'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { PulseLoader } from 'react-spinners'
 
-import axiosClient from '../axiosClient'
-import { submit } from '../xumm'
-
+import axiosClient from '../lib/axiosClient'
+import { submit } from '../lib/xumm'
 import type { TokenWithContent } from '../types'
 
 interface Props {
