@@ -1,19 +1,18 @@
-import React, { useState } from 'react'
-import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
-import { PulseLoader } from 'react-spinners'
+import IconButton from '@mui/material/IconButton'
+import React, { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useHistory } from 'react-router-dom'
+import { PulseLoader } from 'react-spinners'
 import { dropsToXrp } from 'xrpl'
 
-import axiosClient from '../axiosClient'
-import { submit } from '../xumm'
-
+import axiosClient from '../lib/axiosClient'
+import { submit } from '../lib/xumm'
 import type { TokenWithContent, Offer } from '../types'
 
 interface Props {
@@ -79,7 +78,9 @@ const AcceptOffer = ({ onAccept, token, offer, mode }: Props) => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">Accept Offer</DialogTitle>
-          <DialogContent>Accept offer of XRP {dropsToXrp(offer.amount)}?</DialogContent>
+          <DialogContent>
+            Accept offer of XRP {dropsToXrp(offer.amount)}?
+          </DialogContent>
           <DialogActions>
             <PulseLoader
               color="black"

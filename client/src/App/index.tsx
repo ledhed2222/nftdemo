@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
+import { useCookies } from 'react-cookie'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { CSSTransition as CST } from 'react-transition-group'
-import { useCookies } from 'react-cookie'
 import { Client } from 'xrpl'
 
 import STATE from '../STATE'

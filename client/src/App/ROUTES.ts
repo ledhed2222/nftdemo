@@ -1,10 +1,10 @@
-import Home from '../Home'
 import CreateForm from '../CreateForm'
+import Home from '../Home'
 import Login from '../Login'
 import Logout from '../Logout'
+import MyTokens from '../MyTokens'
 import TokenList from '../TokenList'
 import TokenShow from '../TokenShow'
-import MyTokens from '../MyTokens'
 
 const ROUTES = [
   {

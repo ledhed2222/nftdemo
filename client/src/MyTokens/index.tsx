@@ -1,16 +1,12 @@
+import Alert from '@mui/material/Alert'
 import React, { useState, useEffect, useContext } from 'react'
+import { useCookies } from 'react-cookie'
 import { useHistory, useLocation } from 'react-router-dom'
 import { GridLoader } from 'react-spinners'
-import Alert from '@mui/material/Alert'
-import { useCookies } from 'react-cookie'
 
-import axiosClient from './axiosClient'
-
-import Tokens from './components/Tokens'
-
-import type { Token } from './types'
-
-import './TokenList.css'
+import Tokens from '../components/Tokens'
+import axiosClient from '../lib/axiosClient'
+import type { Token } from '../types'
 
 const loaderStyle = {
   display: 'flex',

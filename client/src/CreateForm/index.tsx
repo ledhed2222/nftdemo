@@ -1,17 +1,17 @@
-import { useHistory } from 'react-router-dom'
 import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import React, { useState } from 'react'
-import { PulseLoader } from 'react-spinners'
 import { useCookies } from 'react-cookie'
-import { Client } from 'xrpl'
+import { useHistory } from 'react-router-dom'
+import { PulseLoader } from 'react-spinners'
+import { Client, NFTokenMint } from 'xrpl'
 
-import type { Content } from './types'
-import axiosClient from './axiosClient'
-import { submit } from './xumm'
+import axiosClient from '../lib/axiosClient'
+import { submit } from '../lib/xumm'
+import type { Content } from '../types'
 
-import './CreateForm.css'
+import './index.css'
 
 interface Props {
   client: Client | null
@@ -77,12 +77,12 @@ const CreateForm = ({ client }: Props) => {
       TransferFee: 1,
       URI: uriToHex(`${window.location.origin}/tokens/${contentId}`),
     }
-    const txResult = (await submit(mintTx)) as any
+    const txResult = await submit(mintTx)
     const rawNftNode = txResult?.meta?.AffectedNodes.find(
       (node: any) =>
         node?.CreatedNode?.LedgerEntryType === 'NFTokenPage' ||
         node?.ModifiedNode?.LedgerEntryType === 'NFTokenPage',
-    )
+    ) as any
     const nftNode = rawNftNode.CreatedNode ?? rawNftNode.ModifiedNode
     const previousTokenIds = nftNode?.PreviousFields?.NonFungibleTokens?.map(
       (token: any) => token?.NonFungibleToken?.TokenID,
@@ -95,7 +95,7 @@ const CreateForm = ({ client }: Props) => {
       (tid: string) => !previousTokenIdSet.has(tid),
     )
 
-    const uri = txResult?.transaction?.URI
+    const uri = (txResult?.transaction as NFTokenMint)?.URI
 
     await axiosClient.request({
       method: 'post',

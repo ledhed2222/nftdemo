@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Redirect } from 'react-router-dom'
 import { useCookies } from 'react-cookie'
+import { Redirect } from 'react-router-dom'
 import { GridLoader } from 'react-spinners'
 
-import { requestSignature, signatureResult } from './xumm'
-import axiosClient from './axiosClient'
+import axiosClient from '../lib/axiosClient'
+import { requestSignature, signatureResult } from '../lib/xumm'
 
 const Login = () => {
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null)
