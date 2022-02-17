@@ -30,12 +30,12 @@ const CreateForm = ({ client }: Props) => {
   const [{ account }] = useCookies(['account'])
   const historyRouter = useHistory()
 
-  const onTitleChange = (evn: React.ChangeEvent) => {
+  const onTitleChange = (evn: React.ChangeEvent<HTMLInputElement>) => {
     evn.preventDefault()
     setTitle(evn.target.value)
   }
 
-  const onContentChange = (evn: React.ChangeEvent) => {
+  const onContentChange = (evn: React.ChangeEvent<HTMLTextAreaElement>) => {
     evn.preventDefault()
     setContent(evn.target.value)
   }
