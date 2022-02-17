@@ -14,6 +14,7 @@ import { Client, NFTBuyOffersResponse, NFTSellOffersResponse } from 'xrpl'
 
 import Identicon from '../components/Identicon'
 import axiosClient from '../lib/axiosClient'
+import NotFound from '../NotFound'
 import type { TokenWithContent, Offer } from '../types'
 
 import BurnToken from './BurnToken'
@@ -27,30 +28,41 @@ interface Props {
   client: Client | null
 }
 
+interface Params {
+  id: string
+}
+
 /* eslint-disable complexity --
  * it do be like this */
 const TokenShow = ({ client }: Props) => {
   const [token, setToken] = useState<TokenWithContent | null>(null)
+  const [tokenNotFound, setTokenNotFound] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [buyOffers, setBuyOffers] = useState<Offer[]>([])
   const [sellOffers, setSellOffers] = useState<Offer[]>([])
-  const { id } = useParams()
+  const { id } = useParams<Params>()
   const [{ account }] = useCookies(['account'])
   const isLoggedIn = account != null
   const isMyToken = token && account && token.owner === account
 
   const doLoadToken = async () => {
     setIsLoading(true)
-    const response = await axiosClient.request({
-      method: 'get',
-      url: `/api/tokens/${id}`,
-    })
-    setToken(response.data)
+
+    try {
+      const response = await axiosClient.request({
+        method: 'get',
+        url: `/api/tokens/${id}`,
+      })
+      setToken(response.data)
+    } catch (_error) {
+      setTokenNotFound(true)
+    }
+
     setIsLoading(false)
   }
 
   const loadBuyOffers = async () => {
-    if (!token || !client?.isConnected()) {
+    if (tokenNotFound || !token || !client?.isConnected()) {
       return
     }
     try {
@@ -67,7 +79,7 @@ const TokenShow = ({ client }: Props) => {
   }
 
   const loadSellOffers = async () => {
-    if (!token || !client?.isConnected()) {
+    if (tokenNotFound || !token || !client?.isConnected()) {
       return
     }
     try {
@@ -96,6 +108,10 @@ const TokenShow = ({ client }: Props) => {
   useEffect(() => {
     doLoadOffers()
   }, [token, client])
+
+  if (tokenNotFound) {
+    return <NotFound />
+  }
 
   return (
     <div className="TokenShow">

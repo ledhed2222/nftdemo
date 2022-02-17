@@ -30,6 +30,7 @@
 /client/build/*
 /client/node_modules/*
 /public/static/*
+/public
 
 # Ignore secrets
 .env

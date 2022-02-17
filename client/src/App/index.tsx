@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { CSSTransition as CST } from 'react-transition-group'
 import { Client } from 'xrpl'
 
+import NotFound from '../NotFound'
 import STATE from '../STATE'
 
 import NavBar from './NavBar'
@@ -77,22 +78,25 @@ const App = () => {
       <BrowserRouter>
         <NavBar loggedIn={isLoggedIn} />
         <div className="ContentPortal">
-          {ROUTES.map(({ path, Component }) => (
-            <Route exact path={path} key={path}>
-              {({ match }) => (
-                <CST
-                  in={match != null}
-                  timeout={300}
-                  classNames="fade"
-                  unmountOnExit
-                >
-                  <div className="Content">
-                    <Component client={client} />
-                  </div>
-                </CST>
-              )}
-            </Route>
-          ))}
+          <Switch>
+            {ROUTES.map(({ path, Component }) => (
+              <Route exact path={path} key={path}>
+                {({ match }) => (
+                  <CST
+                    in={match != null}
+                    timeout={300}
+                    classNames="fade"
+                    unmountOnExit
+                  >
+                    <div className="Content">
+                      <Component client={client} />
+                    </div>
+                  </CST>
+                )}
+              </Route>
+            ))}
+            <Route component={NotFound} />
+          </Switch>
         </div>
       </BrowserRouter>
     </div>

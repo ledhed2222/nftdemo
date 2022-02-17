@@ -9,6 +9,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-floating-promises': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/no-unnecessary-type-arguments': 'off',
     'import/no-unused-modules': 'off',
     'jsdoc/require-jsdoc': 'off',
     // TODO not resolving some legit modules

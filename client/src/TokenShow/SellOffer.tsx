@@ -23,7 +23,7 @@ const SellOffer = ({ account, token, onOffer }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [amount, setAmount] = useState<number | null>(null)
 
-  const onAmountChange = (evn: React.ChangeEvent) => {
+  const onAmountChange = (evn: React.ChangeEvent<HTMLInputElement>) => {
     evn.preventDefault()
     setAmount(parseInt(evn.target.value, 10))
   }
