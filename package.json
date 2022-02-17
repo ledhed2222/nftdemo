@@ -1,0 +1,29 @@
+{
+  "name": "nftdemo",
+  "private": true,
+  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ledhed2222/nftdemo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ledhed2222/nftdemo/issues"
+  },
+  "engines": {
+    "npm": ">=7.0.0"
+  },
+  "scripts": {
+    "build": "cd client && npm ci && npm run build",
+    "deploy": "cp -a client/build/. public/",
+    "heroku-postbuild": "npm run build && npm run deploy"
+  },
+  "homepage": "https://github.com/ledhed2222/nftdemo#readme"
+}

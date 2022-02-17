@@ -1,3 +1,5 @@
+/* eslint-disable import/dynamic-import-chunkname --
+ * this comes from create react app */
 import { ReportHandler } from 'web-vitals'
 
 const reportWebVitals = (onPerfEntry?: ReportHandler) => {

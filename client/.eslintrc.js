@@ -31,8 +31,6 @@ module.exports = {
     ],
     // TODO dunno
     '@typescript-eslint/triple-slash-reference': 'off',
-    // TODO dunno
-    '@typescript-eslint/no-unused-vars-experimental': 'off',
     // TODO later
     '@typescript-eslint/no-unnecessary-condition': 'off',
     'react-hooks/exhaustive-deps': 'off',
@@ -43,6 +41,10 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
     '@typescript-eslint/await-thenable': 'off',
+    '@typescript-eslint/naming-convention': 'off',
+    'max-lines-per-function': 'off',
+    '@typescript-eslint/no-magic-numbers': 'off',
+    '@typescript-eslint/consistent-type-assertions': 'off',
     // unsure
     'import/no-named-as-default': 'off',
     // keeps getting confused about what is async

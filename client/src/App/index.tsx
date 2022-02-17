@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { CSSTransition as CST } from 'react-transition-group'

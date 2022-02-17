@@ -1,5 +1,5 @@
 import Alert from '@mui/material/Alert'
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import { useHistory, useLocation } from 'react-router-dom'
 import { GridLoader } from 'react-spinners'
