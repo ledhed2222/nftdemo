@@ -2,7 +2,6 @@ import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import IconButton from '@mui/material/IconButton'
 import React, { useState } from 'react'
@@ -24,7 +23,7 @@ const BuyOffer = ({ account, token, onOffer }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [amount, setAmount] = useState<number | null>(null)
 
-  const onAmountChange = (evn: React.ChangeEvent<HTMLInputElement>) => {
+  const onAmountChange = (evn: React.ChangeEvent) => {
     evn.preventDefault()
     setAmount(parseInt(evn.target.value, 10))
   }
@@ -38,7 +37,8 @@ const BuyOffer = ({ account, token, onOffer }: Props) => {
     const buyOfferTx = {
       TransactionType: 'NFTokenCreateOffer',
       Account: account,
-      Flags: 0, // buy offer
+      // buy offer
+      Flags: 0,
       TokenID: token.xrpl_token_id,
       Amount: `${xrpToDrops(amount)}`,
       Owner: token.owner,

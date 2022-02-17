@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button'
-import React, { useContext } from 'react'
+import React from 'react'
 import { useCookies } from 'react-cookie'
 import { Redirect } from 'react-router-dom'
 

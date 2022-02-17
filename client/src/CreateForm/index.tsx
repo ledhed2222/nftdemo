@@ -1,4 +1,3 @@
-import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import React, { useState } from 'react'
@@ -31,12 +30,12 @@ const CreateForm = ({ client }: Props) => {
   const [{ account }] = useCookies(['account'])
   const historyRouter = useHistory()
 
-  const onTitleChange = (evn: React.ChangeEvent<HTMLInputElement>) => {
+  const onTitleChange = (evn: React.ChangeEvent) => {
     evn.preventDefault()
     setTitle(evn.target.value)
   }
 
-  const onContentChange = (evn: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const onContentChange = (evn: React.ChangeEvent) => {
     evn.preventDefault()
     setContent(evn.target.value)
   }
@@ -72,7 +71,8 @@ const CreateForm = ({ client }: Props) => {
     const mintTx = {
       TransactionType: 'NFTokenMint',
       TokenTaxon: 0,
-      Flags: 8, // transferable
+      // transferable
+      Flags: 8,
       // TODO there is a xumm bug that doesn't allow a 0 transferfee
       TransferFee: 1,
       URI: uriToHex(`${window.location.origin}/tokens/${contentId}`),

@@ -33,7 +33,8 @@ const Login = () => {
     setCookie('account', newAccount, {
       sameSite: 'strict',
       secure: true,
-      maxAge: 604800, // 1 week
+      // 1 week
+      maxAge: 604800,
       path: '/',
     })
   }

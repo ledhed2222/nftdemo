@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useCookies } from 'react-cookie'
 import ReactJson from 'react-json-view'
 import { useParams } from 'react-router-dom'
@@ -14,7 +14,6 @@ import { Client, NFTBuyOffersResponse, NFTSellOffersResponse } from 'xrpl'
 
 import Identicon from '../components/Identicon'
 import axiosClient from '../lib/axiosClient'
-import { submit } from '../lib/xumm'
 import type { TokenWithContent, Offer } from '../types'
 
 import BurnToken from './BurnToken'
@@ -28,16 +27,14 @@ interface Props {
   client: Client | null
 }
 
-interface Params {
-  id: string
-}
-
+/* eslint-disable complexity --
+ * it do be like this */
 const TokenShow = ({ client }: Props) => {
   const [token, setToken] = useState<TokenWithContent | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [buyOffers, setBuyOffers] = useState<Offer[]>([])
   const [sellOffers, setSellOffers] = useState<Offer[]>([])
-  const { id } = useParams<Params>()
+  const { id } = useParams()
   const [{ account }] = useCookies(['account'])
   const isLoggedIn = account != null
   const isMyToken = token && account && token.owner === account
@@ -186,5 +183,6 @@ const TokenShow = ({ client }: Props) => {
     </div>
   )
 }
+/* eslint-enable complexity */
 
 export default TokenShow
