@@ -27,6 +27,10 @@ interface Props {
   client: Client | null
 }
 
+interface Params {
+  id: string
+}
+
 /* eslint-disable complexity --
  * it do be like this */
 const TokenShow = ({ client }: Props) => {
@@ -34,7 +38,7 @@ const TokenShow = ({ client }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [buyOffers, setBuyOffers] = useState<Offer[]>([])
   const [sellOffers, setSellOffers] = useState<Offer[]>([])
-  const { id } = useParams()
+  const { id } = useParams<Params>()
   const [{ account }] = useCookies(['account'])
   const isLoggedIn = account != null
   const isMyToken = token && account && token.owner === account
