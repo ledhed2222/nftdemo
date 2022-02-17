@@ -1,2 +1,2 @@
 web: cd client && npm run start
-api: bundle exec rails s
+api: PORT=3000 bundle exec rails s

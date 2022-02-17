@@ -41,7 +41,7 @@
     "xrpl": "^2.1.1"
   },
   "prettier": "@xrplf/prettier-config",
-  "proxy": "https://localhost:3000",
+  "proxy": "http://localhost:3000",
   "browserslist": {
     "production": [
       ">0.2%",
