@@ -16,7 +16,9 @@ Rails.application.routes.draw do
     post "/xumm", to: "xumm#create"
   end
 
-  match "/tokens/:id", to: "api/contents#exists?", via: [:head]
+  match "/tokens/:id", to: "contents#exists?", via: [:head]
 
-  get "*path", to: "application#frontend_index_html"
+  get "*path", to: "frontend#index", constraints: -> (req) {
+    !req.xhr? && req.format.html?
+  }
 end
