@@ -1,35 +1,27 @@
 require "net/http"
 
 module Xumm
-  XUMM_URI_ROOT = "https://xumm.app/api/v1/platform"
+  XUMM_URI_ROOT = URI("https://xumm.app/api/v1/platform/payload")
   private_constant :XUMM_URI_ROOT
 
   def self.payload(payload_id)
-    uri = URI("#{XUMM_URI_ROOT}/payload/#{payload_id}")
-
-    request = Net::HTTP::Get.new(uri).tap do |req|
-      inject_headers_into(req)
-    end
-
-    do_send(uri, request)
+    uri = URI("#{XUMM_URI_ROOT}/#{payload_id}")
+    do_send(uri, Net::HTTP::Get.new(uri))
   end
 
   def self.submit_payload(payload, user_token: nil)
-    uri = URI("#{XUMM_URI_ROOT}/payload")
-
-    request = Net::HTTP::Post.new(uri).tap do |req|
-      inject_headers_into(req)
+    request = Net::HTTP::Post.new(XUMM_URI_ROOT).tap do |req|
       req.body = JSON.generate({
         txjson: payload,
         user_token: user_token,
       })
     end
-
-    do_send(uri, request)
+    do_send(XUMM_URI_ROOT, request)
   end
 
   def self.do_send(uri, request)
     Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+      inject_headers_into(request)
       http.request(request)
     end.yield_self do |response|
       JSON.parse(response.body)
