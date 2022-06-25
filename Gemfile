@@ -25,6 +25,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 # apparently needed for rails/ruby combo, even though no email used
 gem 'net-smtp', require: false
 gem 'net-pop', require: false
+gem 'net-imap', require: false
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
