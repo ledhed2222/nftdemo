@@ -32,7 +32,7 @@ const AcceptOffer = ({ onAccept, token, offer, mode }: Props) => {
 
     const acceptOfferTx = {
       TransactionType: 'NFTokenAcceptOffer',
-      [mode === 'sell' ? 'SellOffer' : 'BuyOffer']: offer.index,
+      [mode === 'sell' ? 'SellOffer' : 'BuyOffer']: offer.nft_offer_index,
     }
     const txResult = await submit(acceptOfferTx)
     await Promise.all([
