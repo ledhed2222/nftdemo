@@ -34,7 +34,7 @@ const TokenOffers = ({
         Sell Side
         <List>
           {sellOffers.map((offer) => (
-            <ListItem key={offer.index}>
+            <ListItem key={offer.nft_offer_index}>
               <ListItemText primary={`XRP ${dropsToXrp(offer.amount)}`} />
               <ListItemText primary={`From ${offer.owner}`} />
               {isLoggedIn && !isMyToken && (
@@ -53,7 +53,7 @@ const TokenOffers = ({
         Buy Side
         <List>
           {buyOffers.map((offer) => (
-            <ListItem key={offer.index}>
+            <ListItem key={offer.nft_offer_index}>
               <ListItemText primary={`XRP ${dropsToXrp(offer.amount)}`} />
               <ListItemText primary={`From ${offer.owner}`} />
               {isLoggedIn && isMyToken && (

@@ -4,7 +4,7 @@ import { TransactionStream } from 'xrpl'
 export interface Offer {
   amount: string
   flags: number
-  index: string
+  nft_offer_index: string
   owner: string
 }
 
