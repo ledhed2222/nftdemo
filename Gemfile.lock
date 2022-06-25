@@ -92,6 +92,10 @@ GEM
     mini_portile2 (2.8.0)
     minitest (5.16.1)
     msgpack (1.5.2)
+    net-imap (0.2.3)
+      digest
+      net-protocol
+      strscan
     net-pop (0.1.1)
       digest
       net-protocol
@@ -156,6 +160,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    strscan (3.0.1)
     thor (1.2.1)
     timeout (0.2.0)
     tzinfo (2.0.4)
@@ -175,6 +180,7 @@ DEPENDENCIES
   byebug
   dotenv-rails
   listen (~> 3.3)
+  net-imap
   net-pop
   net-smtp
   pg (~> 1.1)
