@@ -92,6 +92,10 @@ GEM
     mini_portile2 (2.8.0)
     minitest (5.16.1)
     msgpack (1.5.2)
+    net-pop (0.1.1)
+      digest
+      net-protocol
+      timeout
     net-protocol (0.1.2)
       io-wait
       timeout
@@ -171,6 +175,7 @@ DEPENDENCIES
   byebug
   dotenv-rails
   listen (~> 3.3)
+  net-pop
   net-smtp
   pg (~> 1.1)
   puma (~> 5.0)
